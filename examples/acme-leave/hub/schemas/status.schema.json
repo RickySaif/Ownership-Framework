@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RickySaif/Ownership-Framework/schemas/status.schema.json",
+  "title": "Run status",
+  "description": "runs/<app>/<run-id>/status.json, written by every run.",
+  "type": "object",
+  "required": ["app", "runId", "mode", "environment", "started", "status", "versions", "newFindings", "possiblyFixed", "specs", "notExplored"],
+  "properties": {
+    "app": { "type": "string" },
+    "runId": { "type": "string" },
+    "mode": { "enum": ["nightly", "weekly", "attended"] },
+    "environment": { "enum": ["local", "dev", "staging", "prod"] },
+    "started": { "type": "string" },
+    "finished": { "type": ["string", "null"] },
+    "hardStop": { "type": "string", "description": "The time the run had to stop by." },
+    "status": { "enum": ["complete", "inconclusive", "aborted"] },
+    "versions": {
+      "type": "object",
+      "required": ["old", "new"],
+      "properties": { "old": { "type": ["string", "null"] }, "new": { "type": ["string", "null"] } }
+    },
+    "newFindings": { "type": "array", "items": { "type": "string" } },
+    "possiblyFixed": { "type": "array", "items": { "type": "string" } },
+    "regressions": { "type": "array", "items": { "type": "string" } },
+    "specs": { "type": "object" },
+    "explored": { "type": "array", "items": { "type": "string" } },
+    "notExplored": { "type": "array", "items": { "type": "string" } },
+    "notes": { "type": "array", "items": { "type": "string" } }
+  }
+}

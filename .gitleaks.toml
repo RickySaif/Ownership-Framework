@@ -1,0 +1,9 @@
+title = "Ownership Framework gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Fictional demo values used by the offline example app"
+regexes = ['''acme-demo''']
+paths = ['''LICENSE-docs''', '''package-lock\.json''']

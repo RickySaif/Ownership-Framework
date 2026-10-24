@@ -1,0 +1,19 @@
+# Downloaded app source (read-only copies) and the code graph: rebuilt by `npm run sync`
+apps/
+graphify-out/
+.local-run/
+.local-db/
+node_modules/
+test-results/
+playwright-report/
+board/dist/
+# Secrets never go in files. These names are blocked just in case.
+.env
+.env.*
+*.pem
+*.key
+accounts/*.json
+!accounts/*.example.json
+# Scratch runs from strict-check and ad-hoc spec or video runs
+runs/*/adhoc/
+runs/*/strict-check/

@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "deny": [
+      "Edit(apps/**)",
+      "Write(apps/**)",
+      "NotebookEdit(apps/**)",
+      "Bash(git -C apps/* commit:*)",
+      "Bash(git -C apps/* push:*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Edit(**/.env*)",
+      "Write(**/.env*)"
+    ]
+  }
+}

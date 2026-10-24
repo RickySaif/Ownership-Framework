@@ -1,0 +1,26 @@
+{
+  "$comment": "Claude Code permissions for unattended runs: only what a run needs. Copy into .claude/settings.json of the machine or CI job that runs the routine.",
+  "permissions": {
+    "defaultMode": "dontAsk",
+    "allow": [
+      "Read(**)",
+      "Edit(qa/**)", "Write(qa/**)",
+      "Edit(runs/**)", "Write(runs/**)",
+      "Edit(board/**)", "Write(board/**)",
+      "Bash(npm run sync:*)", "Bash(npm run sync\\:check:*)", "Bash(npm run sync\\:tip:*)",
+      "Bash(npm run run:*)", "Bash(npm run smoke:*)", "Bash(npm run regression:*)", "Bash(npm run strict-check:*)",
+      "Bash(npm run videos:*)", "Bash(npm run validate:*)", "Bash(npm run board:*)", "Bash(npm run cleanup:*)", "Bash(npm run ledger:*)",
+      "Bash(npx playwright test:*)",
+      "Bash(graphify query:*)", "Bash(graphify path:*)", "Bash(graphify explain:*)",
+      "Bash(git switch -c qa/*)", "Bash(git add:*)", "Bash(git commit:*)", "Bash(git push -u origin qa/*)", "Bash(git status:*)", "Bash(git diff:*)", "Bash(git log:*)",
+      "Bash(gh pr create:*)", "Bash(glab mr create:*)",
+      "mcp__playwright__*"
+    ],
+    "deny": [
+      "Edit(apps/**)", "Write(apps/**)",
+      "Bash(git push origin main:*)", "Bash(git push --force:*)", "Bash(git push -f:*)",
+      "Bash(rm -rf:*)", "Bash(psql:*)", "Bash(mysql:*)",
+      "Read(**/.env)", "Read(**/.env.*)"
+    ]
+  }
+}

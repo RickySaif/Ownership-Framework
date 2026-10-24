@@ -1,0 +1,31 @@
+{
+  "name": "{{hubSlug}}",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "QA hub: bugs, videos, specs, run status and a results board for the apps listed in registry.yaml.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "init": "node tools/init.mjs",
+    "sync": "node tools/sync.mjs",
+    "sync:check": "node tools/sync-check.mjs",
+    "sync:tip": "node tools/sync.mjs --tip-only",
+    "local:up": "node tools/local.mjs up",
+    "local:down": "node tools/local.mjs down",
+    "validate": "node tools/validate.mjs",
+    "board": "node tools/build-board.mjs",
+    "board:dist": "node tools/build-board.mjs --dist",
+    "smoke": "node tools/run-specs.mjs smoke",
+    "regression": "node tools/run-specs.mjs regression",
+    "strict-check": "node tools/strict-check.mjs",
+    "videos": "playwright test -c playwright.videos.config.mjs",
+    "ledger": "node tools/ledger.mjs",
+    "cleanup": "node tools/ledger.mjs cleanup",
+    "run": "node tools/routine.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "ajv": "8.20.0",
+    "yaml": "2.9.1"
+  }
+}

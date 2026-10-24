@@ -1,0 +1,18 @@
+node_modules/
+.DS_Store
+*.log
+# hub working folders (never committed)
+**/hub/apps/
+**/hub/graphify-out/
+**/hub/.local-db/
+**/hub/test-results/
+**/hub/board/dist/
+examples/acme-leave/app/data/
+test-results/
+playwright-report/
+# private words to block in the secret scan (one per line)
+.secret-scan-deny.local
+.env
+.env.*
+!.env.example
+.playwright-mcp/

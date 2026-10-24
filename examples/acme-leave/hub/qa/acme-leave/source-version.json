@@ -1,0 +1,17 @@
+{
+  "app": "acme-leave",
+  "environment": "local",
+  "provider": "path",
+  "source": "../app",
+  "branch": "main",
+  "mode": "tip",
+  "checkedOut": "uncommitted",
+  "tipSha": "uncommitted",
+  "deployedSha": null,
+  "tipAheadOfDeployed": null,
+  "lastTested": null,
+  "commitsSinceLastTested": 0,
+  "filesChangedSinceLastTested": [],
+  "graph": "graphify-out/local/acme-leave",
+  "syncedAt": "2026-10-24T17:00:15.982Z"
+}

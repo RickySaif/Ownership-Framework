@@ -1,0 +1,34 @@
+{
+  "id": "AL-2",
+  "title": "Weekend days are charged as leave",
+  "sev": "high",
+  "area": "requests",
+  "summary": "The length of a request counts calendar days instead of working days. A Friday-to-Monday request is charged as 4 days instead of 2, so employees lose leave they never take.",
+  "steps": [
+    "Log in as Cleo (employee).",
+    "Request leave from Friday 8 March 2030 to Monday 11 March 2030.",
+    "Look at the Days column in My requests: it says 4.",
+    "Have a manager approve it: the balance drops by 4."
+  ],
+  "expected": {
+    "text": "Only Monday to Friday count. Worked out by hand: Friday 8 + Monday 11 March 2030 = 2 working days; Saturday 9 and Sunday 10 do not count.",
+    "requirement": "R2",
+    "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave"
+  },
+  "actual": "The request is stored with days = 4, and an approval takes 4 days off the balance.",
+  "where": { "file": "src/leave.mjs", "function": "countDays" },
+  "how": {
+    "response": "POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}",
+    "state": "SELECT days FROM requests WHERE id = <id> → 4. After approval GET /api/balance → used went up by 4.",
+    "byDesignCheck": "PRD R2 says working days only, with this exact example. Not by design."
+  },
+  "related": ["AL-3"],
+  "state": "open",
+  "hint": "Make countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).",
+  "prd": "US-2 Request leave",
+  "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
+  "video": "qa/acme-leave/videos/AL-2-weekend-days-are-counted-as-leave.webm",
+  "environment": "local (example app)",
+  "foundAt": "2026-10-23",
+  "run": "20261023-0130-nightly"
+}

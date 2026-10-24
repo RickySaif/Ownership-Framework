@@ -1,0 +1,12 @@
+# Add to .gitlab-ci.yml in the hub repo, then create a pipeline schedule (CI/CD → Schedules) with QA_ROUTINE=nightly.
+# Variables (masked): ANTHROPIC_API_KEY, GITLAB_TOKEN (for glab mr create), and each test-account password.
+qa-nightly:
+  image: mcr.microsoft.com/playwright:v1.64.1-noble
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $QA_ROUTINE == "nightly"
+  timeout: 4h
+  variables:
+    QA_ENV: staging
+  script:
+    - npm ci
+    - npx -y @anthropic-ai/claude-code@2.1.296 -p "$(cat routines/nightly.prompt.md)" --settings routines/permissions.json

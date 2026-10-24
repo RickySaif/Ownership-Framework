@@ -1,0 +1,19 @@
+{
+  "name": "ownership-framework",
+  "owner": { "name": "Ricky Saif" },
+  "metadata": {
+    "description": "The Ownership Framework: Claude Code skills for running your own QA hub.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "ownership-framework",
+      "source": "./",
+      "description": "Set up and run a QA hub: test skills, five deliverables per bug, routines and a results board.",
+      "version": "0.1.0",
+      "author": { "name": "Ricky Saif" },
+      "license": "MIT AND CC-BY-4.0",
+      "category": "testing"
+    }
+  ]
+}

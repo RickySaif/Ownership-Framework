@@ -1,0 +1,7 @@
+{
+  "app": "acme-leave",
+  "roles": {
+    "manager": { "user": "qa-manager@acme.example", "password": "<in the keychain: qa-hub/acme-leave/manager>" },
+    "employee": { "user": "qa-employee@acme.example", "password": "<in the keychain: qa-hub/acme-leave/employee>" }
+  }
+}

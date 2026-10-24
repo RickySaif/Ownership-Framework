@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/RickySaif/Ownership-Framework/schemas/bug.schema.json",
+  "title": "Bug",
+  "description": "One bug, one file: qa/<app>/bugs/<ID>.json. Written by the bug-report skill.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "title", "sev", "area", "summary", "steps", "expected", "actual", "how", "state", "environment", "foundAt", "run"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^[A-Z][A-Z0-9]*-\\d+$", "description": "Short app prefix and a number, e.g. AL-1. Same as the file name." },
+    "title": { "type": "string", "minLength": 8, "maxLength": 120 },
+    "sev": { "enum": ["critical", "high", "medium", "low"] },
+    "area": { "type": "string", "description": "Feature area, e.g. approvals, balance, permissions." },
+    "summary": { "type": "string", "minLength": 20, "description": "Two or three sentences a non-programmer understands: what is wrong and who it hurts." },
+    "steps": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "requirement"],
+      "properties": {
+        "text": { "type": "string", "description": "What should happen, taken from the requirement (not from what the app does now). For money and dates, the hand-worked value." },
+        "requirement": { "type": "string", "description": "Requirement id, e.g. R4" },
+        "link": { "type": "string", "description": "URL or repo path to the requirement, e.g. apps/local/acme-leave/docs/prd.md#us-3-decide" }
+      }
+    },
+    "actual": { "type": "string" },
+    "where": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Where the cause is, if known from the source. Leave out if not known.",
+      "properties": {
+        "file": { "type": "string" },
+        "function": { "type": "string" },
+        "line": { "type": "integer", "minimum": 1 },
+        "commit": { "type": "string" }
+      }
+    },
+    "how": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["response", "state"],
+      "description": "Confirmed two ways: what the app answered, and what is stored.",
+      "properties": {
+        "response": { "type": "string", "description": "The UI or API response that shows the bug." },
+        "state": { "type": "string", "description": "The stored state, from the API or a read-only DB query, that shows the bug." },
+        "byDesignCheck": { "type": "string", "description": "Who was asked whether this is by design, when, and the answer." }
+      }
+    },
+    "related": { "type": "array", "items": { "type": "string" } },
+    "state": { "enum": ["open", "fixed", "wontfix", "by-design"] },
+    "hint": { "type": "string", "description": "A short hint for the fix prompt: what to change." },
+    "prd": { "type": "string", "description": "The story or PRD section, e.g. US-3 Decide." },
+    "spec": { "type": "string", "description": "Path of the regression spec that states the correct behaviour." },
+    "video": { "type": "string", "description": "Path of the captioned clip, qa/<app>/videos/<ID>-<slug>.webm" },
+    "videoAfter": { "type": "string", "description": "Optional clip of the same steps on a fix branch." },
+    "environment": { "type": "string", "description": "local, dev, staging or prod, plus the commit tested." },
+    "foundAt": { "type": "string", "format": "date" },
+    "fixedAt": { "type": "string", "format": "date" },
+    "run": { "type": "string", "description": "The run id that found it." }
+  }
+}

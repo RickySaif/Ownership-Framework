@@ -1,0 +1,11 @@
+{
+  "name": "ownership-framework",
+  "displayName": "Ownership Framework",
+  "version": "0.1.0",
+  "description": "Set up and run your own QA hub for the web apps you depend on: spec assurance, exploratory hunts, smoke and regression runs, bug files, captioned videos, regression specs with knownBug, fix prompts, routines and a results board.",
+  "author": { "name": "Ricky Saif" },
+  "homepage": "https://github.com/RickySaif/Ownership-Framework",
+  "repository": "https://github.com/RickySaif/Ownership-Framework",
+  "license": "MIT AND CC-BY-4.0",
+  "keywords": ["qa", "testing", "playwright", "bug-reports", "regression", "exploratory-testing"]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "ownership-framework",
+  "version": "0.1.0",
+  "description": "Claude Code skills for running your own QA hub: bugs, videos, specs, routines and a results board for the web apps you depend on.",
+  "private": true,
+  "type": "module",
+  "license": "MIT AND CC-BY-4.0",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "prepare": "node scripts/install-hooks.mjs",
+    "lint": "eslint .",
+    "secret-scan": "node scripts/secret-scan.mjs --all",
+    "secret-scan:history": "node scripts/secret-scan.mjs --history",
+    "example": "npm run example:sync && npm run example:board",
+    "example:generate-check": "node skills/ownership-setup/scripts/generate-hub.mjs --answers examples/acme-leave/answers.json --out examples/acme-leave/hub --check",
+    "example:sync": "npm --prefix examples/acme-leave/hub run sync",
+    "example:validate": "npm --prefix examples/acme-leave/hub run validate",
+    "example:test": "npm --prefix examples/acme-leave/hub run regression",
+    "example:smoke": "npm --prefix examples/acme-leave/hub run smoke",
+    "example:strict": "npm --prefix examples/acme-leave/hub run strict-check",
+    "example:videos": "npm --prefix examples/acme-leave/hub run videos",
+    "example:board": "npm --prefix examples/acme-leave/hub run board",
+    "example:app": "node examples/acme-leave/app/server.mjs --reset",
+    "visuals": "node docs/visuals/render.mjs && node docs/visuals/capture.mjs && node scripts/check-visuals.mjs",
+    "visuals:check": "node scripts/check-visuals.mjs",
+    "test": "npm run lint && npm run secret-scan && npm run example:generate-check && npm run example:validate && npm run example:test && npm run example:strict"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@playwright/test": "1.64.1",
+    "ajv": "8.20.0",
+    "eslint": "10.13.0",
+    "globals": "17.13.0",
+    "yaml": "2.9.1"
+  }
+}

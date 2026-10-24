@@ -1,0 +1,18 @@
+{
+  "app": "acme-leave",
+  "source": "apps/local/acme-leave/docs/prd.md",
+  "checkedAt": "2026-10-23",
+  "run": "spec-assurance pass, all areas",
+  "rules": [
+    { "id": "R1", "story": "US-1 Balance", "link": "apps/local/acme-leave/docs/prd.md#us-1-balance", "text": "20 working days of leave per calendar year", "verdict": "pass" },
+    { "id": "R2", "story": "US-2 Request leave", "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave", "text": "Only Monday to Friday count; Fri 8 to Mon 11 March 2030 is 2 days", "verdict": "fail", "bug": "AL-2" },
+    { "id": "R3", "story": "US-2 Request leave", "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave", "text": "End on or after start, at least one working day, else 400 and nothing saved", "verdict": "fail", "bug": "AL-3" },
+    { "id": "R4", "story": "US-3 Decide", "link": "apps/local/acme-leave/docs/prd.md#us-3-decide", "text": "Only a manager decides, never their own request; others get 403", "verdict": "fail", "bug": "AL-1" },
+    { "id": "R5", "story": "US-1 Balance", "link": "apps/local/acme-leave/docs/prd.md#us-1-balance", "text": "Remaining = entitlement minus approved working days; pending does not count", "verdict": "pass" },
+    { "id": "R6", "story": "US-4 Cancel", "link": "apps/local/acme-leave/docs/prd.md#us-4-cancel", "text": "Only the requester cancels their own pending request", "verdict": "pass" },
+    { "id": "R7", "story": "US-2 Request leave", "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave", "text": "A request may not exceed the remaining balance (400)", "verdict": "pass" },
+    { "id": "R8", "story": "US-5 Privacy", "link": "apps/local/acme-leave/docs/prd.md#us-5-privacy", "text": "Employees see only their own requests; team list is managers only", "verdict": "pass" },
+    { "id": "R9", "story": "US-2 Request leave", "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave", "text": "A request stays inside one calendar year", "verdict": "pass" },
+    { "id": "R10", "story": "US-3 Decide", "link": "apps/local/acme-leave/docs/prd.md#us-3-decide", "text": "Only pending requests can be decided (409)", "verdict": "pass" }
+  ]
+}

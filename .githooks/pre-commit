@@ -1,0 +1,9 @@
+#!/bin/sh
+# Blocks a commit that contains secrets, real hosts or real e-mail addresses.
+set -e
+node scripts/secret-scan.mjs
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks git --staged --redact --no-banner --config .gitleaks.toml
+else
+  echo "pre-commit: gitleaks not installed, ran the built-in scan only (CI runs gitleaks on the full history)"
+fi

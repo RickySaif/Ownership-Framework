@@ -1,0 +1,6 @@
+# Nightly QA run at 01:30 in the hub's time zone (set CRON_TZ or the machine's time zone to match).
+# Install with: crontab -e   (on a machine the team owns, logged in to Claude Code)
+CRON_TZ={{timezone}}
+30 1 * * *  cd /path/to/{{hubSlug}} && git pull --ff-only && claude -p "$(cat routines/nightly.prompt.md)" --settings routines/permissions.json >> runs/cron.log 2>&1
+# Weekly, Saturday 09:00
+0 9 * * 6   cd /path/to/{{hubSlug}} && git pull --ff-only && claude -p "$(cat routines/weekly.prompt.md)" --settings routines/permissions.json >> runs/cron.log 2>&1
