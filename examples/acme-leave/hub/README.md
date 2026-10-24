@@ -20,6 +20,8 @@ Target another environment with `QA_ENV=staging npm run smoke` (production: smok
 | `npm run sync -- --deployed` | Check out the commit the environment actually runs, not the branch tip |
 | `npm run sync:tip` | Show how far the tip is ahead of what was last tested, without checking anything out |
 | `npm run sync:check` | Stop if the checkout is not the commit the run says it tests |
+| `npm run e2e` | The full end-to-end suite: every requirement, run as a user would. The safety net for refactoring |
+| `npm run coverage -- --suite e2e --min 100` | Fails unless every testable requirement has an e2e test |
 | `npm run strict-check` | Prove each knownBug spec fails on its real assertion when strict, and passes otherwise |
 | `npm run videos` | Record the captioned bug videos |
 | `npm run validate` | Check bug files and run records against the schemas |

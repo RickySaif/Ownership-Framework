@@ -16,6 +16,7 @@ hub:
     - smoke-spec
     - board
     - prd-checklist
+    - e2e-suite
   production:
     policy: smoke-only
     exceptions: []

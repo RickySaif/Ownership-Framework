@@ -8,52 +8,164 @@
     {
       "name": "acme-leave",
       "prefix": "AL",
-      "owner": { "name": "Dana Owner (fictional)", "contact": "dana@acme.example" },
-      "repo": { "provider": "path", "path": "../app", "branch": "main" },
-      "version": { "path": "/version", "field": "sha" },
-      "requirements": [{ "type": "markdown", "location": "apps/local/acme-leave/docs/prd.md" }],
-      "areas": ["balance", "requests", "approvals", "privacy"],
+      "owner": {
+        "name": "Dana Owner (fictional)",
+        "contact": "dana@acme.example"
+      },
+      "repo": {
+        "provider": "path",
+        "path": "../app",
+        "branch": "main"
+      },
+      "version": {
+        "path": "/version",
+        "field": "sha"
+      },
+      "requirements": [
+        {
+          "type": "markdown",
+          "location": "apps/local/acme-leave/docs/prd.md"
+        }
+      ],
+      "areas": [
+        "balance",
+        "requests",
+        "approvals",
+        "privacy"
+      ],
       "environments": {
         "local": {
           "url": "http://localhost:4310",
           "start": {
             "command": "node apps/local/acme-leave/server.mjs --reset",
             "ready": "/health",
-            "env": { "PORT": "4310", "ACME_DB": ".local-db/acme-leave.db", "ACME_TODAY": "2030-01-14" }
+            "env": {
+              "PORT": "4310",
+              "ACME_DB": ".local-db/acme-leave.db",
+              "ACME_TODAY": "2030-01-14"
+            }
           },
-          "db": { "engine": "sqlite", "file": ".local-db/acme-leave.db", "access": "read-write" }
+          "db": {
+            "engine": "sqlite",
+            "file": ".local-db/acme-leave.db",
+            "access": "read-write"
+          }
         },
         "staging": {
           "url": "https://staging.acme.example",
           "db": {
-            "engine": "postgres", "host": "db.staging.acme.example", "port": 5432, "name": "acme_leave",
-            "access": "read-write", "restoresNightly": true,
-            "user": { "env": "ACME_STAGING_DB_USER", "keychain": "qa-hub/acme-leave/staging-db-user" },
-            "password": { "env": "ACME_STAGING_DB_PASSWORD", "keychain": "qa-hub/acme-leave/staging-db" },
-            "tunnel": { "via": "qa@bastion.acme.example", "localPort": 15432 }
+            "engine": "postgres",
+            "host": "db.staging.acme.example",
+            "port": 5432,
+            "name": "acme_leave",
+            "access": "read-write",
+            "restoresNightly": true,
+            "user": {
+              "env": "ACME_STAGING_DB_USER",
+              "keychain": "qa-hub/acme-leave/staging-db-user"
+            },
+            "password": {
+              "env": "ACME_STAGING_DB_PASSWORD",
+              "keychain": "qa-hub/acme-leave/staging-db"
+            },
+            "tunnel": {
+              "via": "qa@bastion.acme.example",
+              "localPort": 15432
+            }
           }
         }
       },
       "login": {
-        "api": { "path": "/api/login", "method": "POST", "body": { "email": "{user}", "password": "{password}" } },
-        "ui": { "path": "/", "user": "[data-testid=email]", "password": "[data-testid=password]", "submit": "[data-testid=login]", "loggedIn": "[data-testid=who]" }
+        "api": {
+          "path": "/api/login",
+          "method": "POST",
+          "body": {
+            "email": "{user}",
+            "password": "{password}"
+          }
+        },
+        "ui": {
+          "path": "/",
+          "user": "[data-testid=email]",
+          "password": "[data-testid=password]",
+          "submit": "[data-testid=login]",
+          "loggedIn": "[data-testid=who]"
+        }
       },
       "testAccounts": {
         "roles": {
-          "manager": { "user": "ana@acme.example", "password": { "env": "ACME_DEMO_PASSWORD", "publicDemoValue": "acme-demo" } },
-          "employee": { "user": "ben@acme.example", "password": { "env": "ACME_DEMO_PASSWORD", "publicDemoValue": "acme-demo" } },
-          "employee2": { "user": "cleo@acme.example", "password": { "env": "ACME_DEMO_PASSWORD", "publicDemoValue": "acme-demo" } }
+          "manager": {
+            "user": "ana@acme.example",
+            "password": {
+              "env": "ACME_DEMO_PASSWORD",
+              "publicDemoValue": "acme-demo"
+            }
+          },
+          "employee": {
+            "user": "ben@acme.example",
+            "password": {
+              "env": "ACME_DEMO_PASSWORD",
+              "publicDemoValue": "acme-demo"
+            }
+          },
+          "employee2": {
+            "user": "cleo@acme.example",
+            "password": {
+              "env": "ACME_DEMO_PASSWORD",
+              "publicDemoValue": "acme-demo"
+            }
+          }
         },
-        "permanentRows": { "users": [1, 2, 3] }
+        "permanentRows": {
+          "users": [
+            1,
+            2,
+            3
+          ]
+        }
       },
       "routines": {
-        "nightly": { "enabled": true, "at": "01:30", "hardStop": "06:00", "env": "staging" },
-        "weekly": { "enabled": true, "at": "Sat 09:00", "hardStop": "13:00", "env": "staging", "rotation": ["balance", "requests", "approvals", "privacy"] }
+        "nightly": {
+          "enabled": true,
+          "at": "01:30",
+          "hardStop": "06:00",
+          "env": "staging"
+        },
+        "weekly": {
+          "enabled": true,
+          "at": "Sat 09:00",
+          "hardStop": "13:00",
+          "env": "staging",
+          "rotation": [
+            "balance",
+            "requests",
+            "approvals",
+            "privacy"
+          ]
+        }
       }
     }
   ],
-  "testTypes": ["spec-assurance", "exploratory-hunt", "smoke-check", "regression-run"],
-  "deliverables": ["bug-report", "bug-video", "regression-spec", "smoke-spec", "board", "prd-checklist"],
-  "production": { "policy": "smoke-only", "exceptions": [] },
-  "board": { "publish": "pages" }
+  "testTypes": [
+    "spec-assurance",
+    "exploratory-hunt",
+    "smoke-check",
+    "regression-run"
+  ],
+  "deliverables": [
+    "bug-report",
+    "bug-video",
+    "regression-spec",
+    "smoke-spec",
+    "board",
+    "prd-checklist",
+    "e2e-suite"
+  ],
+  "production": {
+    "policy": "smoke-only",
+    "exceptions": []
+  },
+  "board": {
+    "publish": "pages"
+  }
 }

@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "description": "QA hub: bugs, videos, specs, run status and a results board for the apps listed in registry.yaml.",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "init": "node tools/init.mjs",
     "sync": "node tools/sync.mjs",
@@ -17,6 +19,8 @@
     "board:dist": "node tools/build-board.mjs --dist",
     "smoke": "node tools/run-specs.mjs smoke",
     "regression": "node tools/run-specs.mjs regression",
+    "e2e": "node tools/run-specs.mjs e2e",
+    "coverage": "node tools/coverage.mjs",
     "strict-check": "node tools/strict-check.mjs",
     "videos": "playwright test -c playwright.videos.config.mjs",
     "ledger": "node tools/ledger.mjs",

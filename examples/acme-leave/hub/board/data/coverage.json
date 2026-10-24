@@ -17,6 +17,17 @@
           "R5"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/balance.spec.mjs",
+        "title": "R1 R5 the balance shows 20 days, and a pending request does not reduce it",
+        "bug": null,
+        "requirements": [
+          "R1",
+          "R5"
+        ],
+        "last": "passed"
       }
     ]
   },
@@ -47,6 +58,26 @@
           "R2"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R2 a Monday-to-Friday week is charged 5 days",
+        "bug": null,
+        "requirements": [
+          "R2"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R2 a Friday-to-Monday request is charged 2 days, not the weekend",
+        "bug": "AL-2",
+        "requirements": [
+          "R2"
+        ],
+        "last": "known-bug-open"
       }
     ]
   },
@@ -62,6 +93,16 @@
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
         "title": "R3 an end date before the start date is refused and nothing is saved",
+        "bug": "AL-3",
+        "requirements": [
+          "R3"
+        ],
+        "last": "known-bug-open"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R3 a reversed date range is refused with a message and nothing is saved",
         "bug": "AL-3",
         "requirements": [
           "R3"
@@ -117,6 +158,47 @@
           "R4"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 R5 a manager approves a request in the Team list and the balance drops",
+        "bug": null,
+        "requirements": [
+          "R4",
+          "R5"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 a manager rejects a request and the balance does not change",
+        "bug": null,
+        "requirements": [
+          "R4"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 an employee cannot decide requests: no Team tab, and the API refuses",
+        "bug": "AL-1",
+        "requirements": [
+          "R4"
+        ],
+        "last": "known-bug-open"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 a manager cannot decide their own request",
+        "bug": "AL-1",
+        "requirements": [
+          "R4"
+        ],
+        "last": "known-bug-open"
       }
     ]
   },
@@ -132,6 +214,28 @@
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
         "title": "R1 R5 the entitlement is 20 days and a pending request does not count",
+        "bug": null,
+        "requirements": [
+          "R1",
+          "R5"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 R5 a manager approves a request in the Team list and the balance drops",
+        "bug": null,
+        "requirements": [
+          "R4",
+          "R5"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/balance.spec.mjs",
+        "title": "R1 R5 the balance shows 20 days, and a pending request does not reduce it",
         "bug": null,
         "requirements": [
           "R1",
@@ -158,6 +262,16 @@
           "R6"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R6 an employee cancels their own pending request, and nobody else can",
+        "bug": null,
+        "requirements": [
+          "R6"
+        ],
+        "last": "passed"
       }
     ]
   },
@@ -173,6 +287,16 @@
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
         "title": "R7 a request longer than the remaining balance is refused",
+        "bug": null,
+        "requirements": [
+          "R7"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R7 a request longer than the remaining balance is refused with a message",
         "bug": null,
         "requirements": [
           "R7"
@@ -208,6 +332,16 @@
           "R8"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/privacy.spec.mjs",
+        "title": "R8 an employee sees only their own requests and cannot open the team list",
+        "bug": null,
+        "requirements": [
+          "R8"
+        ],
+        "last": "passed"
       }
     ]
   },
@@ -228,6 +362,16 @@
           "R9"
         ],
         "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R9 a request across the new year is refused with a message",
+        "bug": null,
+        "requirements": [
+          "R9"
+        ],
+        "last": "passed"
       }
     ]
   },
@@ -243,6 +387,16 @@
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
         "title": "R10 a decided request cannot be decided again",
+        "bug": null,
+        "requirements": [
+          "R10"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R10 a decided request shows no actions and cannot be decided again",
         "bug": null,
         "requirements": [
           "R10"

@@ -50,7 +50,7 @@ None. Any exception must be added here and in `registry.yaml` with who approved 
 ## What this hub does
 
 - Test types: spec assurance, exploratory hunts, smoke checks, regression runs
-- Deliverables for each confirmed bug: bug file, captioned video, regression spec with knownBug, smoke suite, board with fix prompts, requirements coverage table
+- Deliverables for each confirmed bug: bug file, captioned video, regression spec with knownBug, smoke suite, board with fix prompts, requirements coverage table, full e2e suite covering 100% of the requirements (refactoring safety net)
 - Routines: acme-leave nightly at 01:30 on staging, hard stop 06:00; acme-leave weekly at Sat 09:00 on staging, hard stop 13:00 (time zone Asia/Jakarta)
 - Board: published to GitHub Pages from board/dist (board skill)
 
@@ -61,6 +61,7 @@ None. Any exception must be added here and in `registry.yaml` with who approved 
 | Bug | `qa/<app>/bugs/<ID>.json` (schema in `schemas/bug.schema.json`, check with `npm run validate`) |
 | Video | `qa/<app>/videos/<ID>-<slug>.webm` (demos in `qa/<app>/videos/demos/`, record with `npm run videos`) |
 | Regression spec | `qa/<app>/specs/regression/*.spec.mjs` (check with `npm run strict-check`) |
+| Full e2e suite | `qa/<app>/specs/e2e/*.spec.mjs`: every testable requirement, end to end (`npm run e2e`, gate: `npm run coverage -- --suite e2e --min 100`) |
 | Smoke spec | `qa/<app>/specs/smoke/*.spec.mjs` (read-only) |
 | Exploratory notes | `qa/<app>/explore/` |
 | SQL the run used | `qa/<app>/db-actions/` |

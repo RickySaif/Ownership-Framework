@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync, copyFileSync, rmSync } from 'node:fs';
 import { join, basename } from 'node:path';
 import { HUB, rel, registry, appNames, app, qaDir, runs, listDir, readJson, writeJson } from './lib/hub.mjs';
+import { specIndex } from './lib/specs.mjs';
 
 const dist = process.argv.includes('--dist');
 const reg = registry();
@@ -38,29 +39,13 @@ function fixPrompt(bug, a, coverage) {
     bug.hint || 'Make the behaviour match the requirement above. Keep the change small and in the place named under "Where".',
     '',
     '## Done when',
+    ...(coverage.some((c) => c.suite === 'e2e') ? ['- The full e2e suite stays green (`npm run e2e`): it is the safety net that shows nothing else broke.'] : []),
     bug.spec
       ? `- The regression spec \`${bug.spec}\`${specTests.length ? ` (test ${specTests.join(', ')})` : ''} passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.`
       : '- A test that states the requirement passes.',
     `- Add or update a test in the app's own test suite for requirement ${bug.expected.requirement}.`,
     '- No other behaviour changes. Do not edit the QA hub.',
   ].join('\n');
-}
-
-function specIndex(name) {
-  // Which spec tests exist, and which bug each one guards (from knownBug markers and the "<ID>" in the title).
-  const out = [];
-  for (const suite of ['regression', 'smoke']) {
-    const dir = join(qaDir(name), 'specs', suite);
-    for (const f of listDir(dir, (f) => /\.spec\.m?[jt]s$/.test(f))) {
-      const src = readFileSync(join(dir, f), 'utf8');
-      for (const m of src.matchAll(/\btest\(\s*(['"`])(.+?)\1\s*,\s*async[\s\S]*?(?=\n\s*test\(|\n\}\);?\s*$|$)/g)) {
-        const known = /knownBug\(\s*['"]([A-Z][A-Z0-9]*-\d+)['"]/.exec(m[0]);
-        const reqs = [...new Set([...m[2].matchAll(/\bR\d+\b/g)].map((r) => r[0]))];
-        out.push({ suite, file: rel(join(dir, f)), title: m[2].replace(/\\(.)/g, '$1'), bug: known?.[1] || null, requirements: reqs });
-      }
-    }
-  }
-  return out;
 }
 
 const data = { generated: new Date().toISOString(), hub: reg.hub?.name || 'QA hub', timezone: reg.hub?.timezone || 'UTC', apps: [], bugs: [], runs: [], coverage: [] };

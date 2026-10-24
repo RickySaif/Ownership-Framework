@@ -54,6 +54,9 @@ Ask in this order, one question at a time. Defaults are in **bold**. Keys refer 
     regression-run → `testTypes`.
 13. "For each bug, which deliverables?" (**bug file, video, regression spec, board**; smoke suite and coverage table
     optional) → `deliverables`.
+    Then: "Do you also want a full end-to-end suite that covers 100% of the requirements? It takes longer to build,
+    but it becomes a safety net: when developers refactor the code later, it shows straight away if any behaviour
+    changed." (**yes if the app will be refactored or rebuilt; otherwise later**) → add `e2e-suite`.
 14. "Should it run by itself? Nightly, weekly, both, or only when you ask?" (**nightly 01:30 with a 06:00 hard stop,
     weekly Saturday 09:00, on staging**) → `apps[].routines`. The routine-setup skill schedules them later.
 15. "Production: smoke-only on test accounts, or not at all?" (**smoke-only**) → `production.policy`. Exceptions only

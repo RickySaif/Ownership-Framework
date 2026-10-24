@@ -27,6 +27,7 @@ const LABELS = {
   'spec-assurance': 'spec assurance', 'exploratory-hunt': 'exploratory hunts', 'smoke-check': 'smoke checks', 'regression-run': 'regression runs',
   'bug-report': 'bug file', 'bug-video': 'captioned video', 'regression-spec': 'regression spec with knownBug', 'smoke-spec': 'smoke suite',
   board: 'board with fix prompts', 'prd-checklist': 'requirements coverage table',
+  'e2e-suite': 'full e2e suite covering 100% of the requirements (refactoring safety net)',
 };
 const list = (xs) => (xs?.length ? xs.map((x) => LABELS[x] || x).join(', ') : 'none chosen yet');
 
@@ -154,7 +155,7 @@ files.set('registry.yaml', `# Registry: one entry per app this hub tests. Secret
 const localDb = A.apps.map((a) => a.environments.local?.db).find((d) => d);
 files.set('qa.env', `# Non-secret settings (see qa.env.example)\nQA_ENV=${A.defaultEnv || 'local'}\n${localDb ? `QA_ISOLATED_DB=${localDb.engine === 'sqlite' ? localDb.file : localDb.name}\n` : ''}`);
 for (const a of A.apps) {
-  for (const d of ['bugs', 'videos/demos', 'specs/regression', 'specs/smoke', 'explore', 'db-actions']) files.set(`qa/${a.name}/${d}/.gitkeep`, '');
+  for (const d of ['bugs', 'videos/demos', 'specs/regression', 'specs/e2e', 'specs/smoke', 'explore', 'db-actions']) files.set(`qa/${a.name}/${d}/.gitkeep`, '');
   files.set(`runs/${a.name}/.gitkeep`, '');
   files.set(`qa/${a.name}/specs/smoke/login.spec.mjs`, smokeStarter(a));
 }

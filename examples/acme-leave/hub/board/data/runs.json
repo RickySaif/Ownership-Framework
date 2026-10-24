@@ -28,6 +28,11 @@
         "total": 14,
         "known-bug-open": 4,
         "passed": 10
+      },
+      "e2e": {
+        "total": 13,
+        "passed": 9,
+        "known-bug-open": 4
       }
     },
     "explored": [
@@ -41,8 +46,99 @@
     "notes": [
       "First run of this hub: no previous tested commit, so the whole app was in scope."
     ],
-    "report": "# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → e0eab5e4 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n",
+    "report": "# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → e0eab5e4 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Full e2e suite: 13 tests, 9 passed, 4 known-bug-open; covers 10 of 10 testable requirements (100%).\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n",
     "tests": [
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 R5 a manager approves a request in the Team list and the balance drops",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 a manager rejects a request and the balance does not change",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 an employee cannot decide requests: no Team tab, and the API refuses",
+        "result": "known-bug-open",
+        "knownBug": "AL-1"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R4 a manager cannot decide their own request",
+        "result": "known-bug-open",
+        "knownBug": "AL-1"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/approvals.spec.mjs",
+        "title": "R10 a decided request shows no actions and cannot be decided again",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/balance.spec.mjs",
+        "title": "R1 R5 the balance shows 20 days, and a pending request does not reduce it",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/privacy.spec.mjs",
+        "title": "R8 an employee sees only their own requests and cannot open the team list",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R2 a Monday-to-Friday week is charged 5 days",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R2 a Friday-to-Monday request is charged 2 days, not the weekend",
+        "result": "known-bug-open",
+        "knownBug": "AL-2"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R3 a reversed date range is refused with a message and nothing is saved",
+        "result": "known-bug-open",
+        "knownBug": "AL-3"
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R7 a request longer than the remaining balance is refused with a message",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R9 a request across the new year is refused with a message",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "e2e",
+        "file": "qa/acme-leave/specs/e2e/requests.spec.mjs",
+        "title": "R6 an employee cancels their own pending request, and nobody else can",
+        "result": "passed",
+        "knownBug": null
+      },
       {
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",

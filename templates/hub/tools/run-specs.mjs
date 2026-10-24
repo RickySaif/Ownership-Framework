@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Runs a suite and sorts the results.
 //   npm run regression [-- --app acme-leave]     every regression spec
+//   npm run e2e        [-- --app acme-leave]     the full end-to-end suite (every requirement, the refactoring safety net)
 //   npm run smoke      [-- --app acme-leave]     the read-only smoke suite
 // Each failure is sorted into: new regression · known bug still open · bug possibly fixed (a knownBug test that passed).
 // Results go to runs/<app>/<run-id>/specs-<suite>.json and status.json. The run id comes from QA_RUN_ID, or a new
@@ -12,7 +13,7 @@ import { HUB, rel, appNames, targetEnv, runsDir, newRunId, readJson, writeJson, 
 
 const args = process.argv.slice(2);
 const suite = args[0];
-if (!['regression', 'smoke'].includes(suite)) fail('usage: run-specs.mjs regression|smoke [--app NAME]');
+if (!['regression', 'e2e', 'smoke'].includes(suite)) fail('usage: run-specs.mjs regression|e2e|smoke [--app NAME]');
 const only = args.includes('--app') ? args[args.indexOf('--app') + 1] : null;
 const env = targetEnv();
 const runId = process.env.QA_RUN_ID || newRunId(process.env.QA_MODE || 'attended');

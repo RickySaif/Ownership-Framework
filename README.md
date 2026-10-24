@@ -15,7 +15,7 @@ newer and git.
 ```sh
 git clone https://github.com/RickySaif/Ownership-Framework.git && cd Ownership-Framework
 npm ci && npx playwright install chromium
-npm run example      # syncs the demo app, runs every spec, builds the board
+npm run example      # syncs the demo app, runs every suite, builds the board
 ```
 
 Then open `examples/acme-leave/hub/board/index.html` in your browser.
@@ -52,6 +52,13 @@ Every confirmed bug ends up as five things, so a developer (or a coding agent) c
    until the fix lands, then flips. Each one is proven: in strict mode it must fail on its real assertion.
 4. **Fix prompt** for a coding agent: which file and function, why it is wrong, the fix, which spec must turn green.
 5. **Board**: everything on one page, with filters, the video, and a copy-fix-prompt button.
+
+**Optional: a full e2e suite as a safety net for refactoring.** The `e2e-suite` skill builds end-to-end tests for
+**100% of the app's testable requirements**, driven through the browser the way users work. Because the tests only
+touch what users see, developers can refactor, migrate or rewrite the code underneath: if the suite stays green, the
+specified behaviour survived; if it goes red, it names the requirement that broke, before users notice. A coverage
+gate (`npm run coverage -- --suite e2e --min 100`) keeps it at 100%. The example has one: 13 journeys covering all 10
+Acme Leave requirements.
 
 ```mermaid
 flowchart LR
@@ -95,7 +102,7 @@ flowchart LR
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/visuals/out/setup-matrix-dark.png">
-  <img alt="Matrix of test types by routine. Spec assurance: weekly one area, attended any area. Exploratory hunt: nightly the diff only, weekly deep on one area, attended with a person judging. Smoke check: always, every routine. Regression run: all specs nightly and weekly, on demand when attended. Deliverables to choose: bug file, captioned video, regression spec, smoke suite, board, and optionally a coverage table." src="docs/visuals/out/setup-matrix-light.png" width="100%">
+  <img alt="Matrix of test types by routine. Spec assurance: weekly one area, attended any area. Exploratory hunt: nightly the diff only, weekly deep on one area, attended with a person judging. Smoke check: always, every routine. Regression run: all specs nightly and weekly, on demand when attended. Deliverables to choose: bug file, captioned video, regression spec, smoke suite, board, and optionally a coverage table and a full e2e suite covering 100% of the requirements as a safety net for refactoring." src="docs/visuals/out/setup-matrix-light.png" width="100%">
 </picture>
 
 | Skill | What it does |
@@ -109,6 +116,7 @@ flowchart LR
 | `bug-video` | Records the captioned video with an evidence panel, plus an optional after-fix clip |
 | `regression-spec` | Writes the spec of the correct behaviour with `knownBug`, and proves it with strict-check |
 | `smoke-spec` | Writes a short, read-only smoke suite per app with its own Playwright config |
+| `e2e-suite` | Optional: a full e2e suite covering 100% of the requirements, the safety net for future refactoring |
 | `board` | Builds and publishes the board, with a fix prompt per bug |
 | `prd-checklist` | Coverage by requirement: requirement → spec → last result, and the gaps |
 | `routine-setup` | Schedules nightly and weekly runs with a least-privilege permissions file |

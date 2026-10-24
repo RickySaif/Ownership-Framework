@@ -4,7 +4,7 @@
 //   REGRESSION_STRICT=1   every knownBug test must FAIL, on its real assertion (an expect(...) error),
 //                         not on a helper error; every other test must still pass
 // A knownBug test that passes in strict mode does not test the bug. One that fails with a helper error tests the setup.
-//   npm run strict-check [-- --app acme-leave]
+//   npm run strict-check [-- --app acme-leave]   (regression and e2e suites)
 import { spawnSync } from 'node:child_process';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -12,7 +12,8 @@ import { HUB, appNames, fail } from './lib/hub.mjs';
 
 const args = process.argv.slice(2);
 const only = args.includes('--app') ? args[args.indexOf('--app') + 1] : null;
-const projects = (only ? [only] : appNames()).flatMap((n) => ['--project', `${n}-regression`]);
+// Both suites that may carry knownBug markers: regression and the full e2e suite.
+const projects = (only ? [only] : appNames()).flatMap((n) => ['--project', `${n}-regression`, '--project', `${n}-e2e`]);
 
 function run(strict) {
   const out = join(HUB, 'test-results', `strict-check-${strict ? 'strict' : 'normal'}.json`);

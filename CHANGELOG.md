@@ -5,6 +5,15 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Optional deliverable **full e2e suite** (`e2e-suite` skill): end-to-end tests for 100% of an app's testable
+  requirements, the safety net for future refactoring. New `npm run e2e` and the coverage gate
+  `npm run coverage -- --suite e2e --min 100`; routines run it nightly and strict-check covers it.
+- The Acme Leave example has a full e2e suite: 13 browser journeys covering R1-R10 (100%), checked in CI.
+
+### Fixed
+- The board's coverage table now matches test titles that contain quotes.
+
 ## [0.1.0] - 2026-10-25
 
 ### Added

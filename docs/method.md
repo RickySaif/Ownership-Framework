@@ -28,5 +28,8 @@ The full method is in the hub playbook, which every hub gets a copy of and can c
 - **Only touch what you made.** Every run keeps a ledger; cleanup reads only the ledger.
 - **Proof every night.** A routine syncs the latest code, runs every spec, explores only what changed, and reports.
   Red stops the line: a new regression is dealt with before new work, and every bug that reached users becomes a spec.
+- **A safety net for refactoring (optional).** A full e2e suite covers 100% of the testable requirements, through
+  the UI the way users work. Developers can restructure or rewrite the code; a green suite shows nothing specified
+  changed. `npm run coverage -- --suite e2e --min 100` keeps it at 100%.
 - **Coverage by requirement.** The question is "which rules have a spec that states them", not "how many lines ran".
   Testing shows bugs are there; it never proves they are not, so keep exploring.

@@ -1,4 +1,5 @@
-// Regression suite: every spec in qa/<app>/specs/regression. Run with `npm run regression`.
+// Regression suite (qa/<app>/specs/regression, `npm run regression`) and the full e2e suite
+// (qa/<app>/specs/e2e, `npm run e2e`). Both may write test data, so neither runs against production.
 import { defineConfig } from '@playwright/test';
 import { projects, webServers } from './tools/lib/pw.mjs';
 
@@ -10,6 +11,6 @@ export default defineConfig({
   timeout: 30_000,
   reporter: 'list',
   use: { trace: 'retain-on-failure', screenshot: 'only-on-failure' },
-  projects: projects('regression'),
+  projects: [...projects('regression'), ...projects('e2e')],
   webServer: webServers(),
 });

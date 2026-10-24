@@ -5,6 +5,7 @@
 ## Specs
 - Smoke: 6 passed.
 - Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.
+- Full e2e suite: 13 tests, 9 passed, 4 known-bug-open; covers 10 of 10 testable requirements (100%).
 - Strict check: every knownBug test fails on its real assertion.
 
 ## New findings (all five deliverables made)

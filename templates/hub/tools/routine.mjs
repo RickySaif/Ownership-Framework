@@ -4,13 +4,13 @@
 //
 //   npm run run -- start     --app NAME --mode nightly|weekly|attended [--hard-stop 06:00]
 //        → syncs the tip, checks the checkout, checks login, creates the run, prints the run id and what changed
-//   npm run run -- specs     --app NAME --run RUN_ID      → regression + smoke, sorted
+//   npm run run -- specs     --app NAME --run RUN_ID      → smoke, regression and (if present) the e2e suite, sorted
 //   npm run run -- finish    --app NAME --run RUN_ID [--status complete|inconclusive|aborted]
 //        → cleanup from the ledger, validate, board rebuild, closes status.json
 //   npm run run -- time-left --app NAME --run RUN_ID      → minutes left before the hard stop (exit 1 when past it)
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { HUB, registry, app, targetEnv, qaDir, runsDir, newRunId, readJson, writeJson, fail } from './lib/hub.mjs';
 
 const [phase, ...rest] = process.argv.slice(2);
@@ -85,10 +85,12 @@ if (phase === 'start') {
   const extra = { QA_RUN_ID: runId, QA_MODE: status.mode };
   const smokeOk = npm('smoke', ['--app', appName], extra);
   const regressionOk = env === 'prod' ? true : npm('regression', ['--app', appName], extra);
+  const hasE2e = existsSync(join(qaDir(appName), 'specs', 'e2e')) && readdirSync(join(qaDir(appName), 'specs', 'e2e')).some((f) => f.endsWith('.spec.mjs'));
+  const e2eOk = env === 'prod' || !hasE2e ? true : npm('e2e', ['--app', appName], extra);
   const after = load(runId);
-  if (!smokeOk || !regressionOk) after.notes.push('Red: a new regression or error. Red stops the line: report it before any new work.');
+  if (!smokeOk || !regressionOk || !e2eOk) after.notes.push('Red: a new regression or error. Red stops the line: report it before any new work.');
   writeJson(statusPath(runId), after);
-  process.exit(smokeOk && regressionOk ? 0 : 1);
+  process.exit(smokeOk && regressionOk && e2eOk ? 0 : 1);
 } else if (phase === 'finish') {
   const runId = opt('--run');
   const status = load(runId);

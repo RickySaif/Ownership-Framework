@@ -39,6 +39,11 @@ When a bug is confirmed, the hub produces, in this order:
    which spec must turn green.
 5. **Board**: everything above on one page, with filters, the video player and a "copy fix prompt" button.
 
+Optional, for the whole app rather than one bug: a **full e2e suite** (`qa/<app>/specs/e2e/`) with a test for every
+testable requirement, checked by `npm run coverage -- --suite e2e --min 100`. Because it only uses the app the way a
+user does, it is the **safety net for refactoring**: developers can restructure the code, and a green suite shows the
+specified behaviour survived.
+
 ## Reading code
 
 Before reading an app's source, ask the code graph: `graphify query "<question>" --graph graphify-out/<env>/<app>/graph.json`.

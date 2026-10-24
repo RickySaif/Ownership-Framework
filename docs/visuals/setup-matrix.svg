@@ -56,7 +56,9 @@
       <rect x="24" y="258" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 269 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
       <text x="60" y="275" class="body" font-weight="700">Board</text><text x="214" y="275" class="small t-muted">bugs, videos, prompts, runs</text>
       <rect x="24" y="302" width="22" height="22" rx="6" class="panel"/>
-      <text x="60" y="319" class="body" font-weight="700">Coverage table</text><text x="214" y="319" class="small t-muted">requirement → spec</text>
+      <text x="60" y="319" class="body" font-weight="700">Coverage table</text><text x="214" y="319" class="small t-muted">optional · requirement → spec</text>
+      <rect x="24" y="346" width="22" height="22" rx="6" class="panel"/>
+      <text x="60" y="363" class="body" font-weight="700">Full e2e suite</text><text x="214" y="363" class="small t-muted">optional · 100% · refactor safety net</text>
     </g>
   </g>
 </svg>
