@@ -56,7 +56,7 @@ function specIndex(name) {
       for (const m of src.matchAll(/\btest\(\s*(['"`])(.+?)\1\s*,\s*async[\s\S]*?(?=\n\s*test\(|\n\}\);?\s*$|$)/g)) {
         const known = /knownBug\(\s*['"]([A-Z][A-Z0-9]*-\d+)['"]/.exec(m[0]);
         const reqs = [...new Set([...m[2].matchAll(/\bR\d+\b/g)].map((r) => r[0]))];
-        out.push({ suite, file: rel(join(dir, f)), title: m[2], bug: known?.[1] || null, requirements: reqs });
+        out.push({ suite, file: rel(join(dir, f)), title: m[2].replace(/\\(.)/g, '$1'), bug: known?.[1] || null, requirements: reqs });
       }
     }
   }

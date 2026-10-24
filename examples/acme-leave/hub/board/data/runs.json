@@ -10,7 +10,7 @@
     "status": "complete",
     "versions": {
       "old": null,
-      "new": "c8d93766fbeca584424a62599249bd6774ae510a"
+      "new": "e0eab5e4ea71aef9f5ddb717801e59a9f641af81"
     },
     "newFindings": [
       "AL-1",
@@ -41,7 +41,7 @@
     "notes": [
       "First run of this hub: no previous tested commit, so the whole app was in scope."
     ],
-    "report": "# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → c8d93766 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n",
+    "report": "# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → e0eab5e4 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n",
     "tests": [
       {
         "suite": "regression",

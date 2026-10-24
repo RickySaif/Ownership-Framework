@@ -31,7 +31,7 @@
   "prd": "US-3 Decide",
   "spec": "qa/acme-leave/specs/regression/approvals.spec.mjs",
   "video": "qa/acme-leave/videos/AL-1-employee-approves-own-request.webm",
-  "environment": "local, commit c8d93766",
+  "environment": "local, commit e0eab5e4",
   "foundAt": "2026-10-25",
   "run": "20261025-0006-nightly"
 }

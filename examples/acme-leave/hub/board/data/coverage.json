@@ -91,22 +91,22 @@
       {
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
-        "title": "R4 an employee cannot approve a colleague\\'s request",
+        "title": "R4 an employee cannot approve a colleague's request",
         "bug": "AL-1",
         "requirements": [
           "R4"
         ],
-        "last": null
+        "last": "known-bug-open"
       },
       {
         "suite": "regression",
         "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
-        "title": "R4 a manager approves an employee\\'s request",
+        "title": "R4 a manager approves an employee's request",
         "bug": null,
         "requirements": [
           "R4"
         ],
-        "last": null
+        "last": "passed"
       },
       {
         "suite": "regression",

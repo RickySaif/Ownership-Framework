@@ -33,7 +33,7 @@
   "prd": "US-2 Request leave",
   "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
   "video": "qa/acme-leave/videos/AL-2-weekend-days-are-counted-as-leave.webm",
-  "environment": "local, commit c8d93766",
+  "environment": "local, commit e0eab5e4",
   "foundAt": "2026-10-25",
   "run": "20261025-0006-nightly"
 }

@@ -1,6 +1,6 @@
 # Nightly run 20261025-0006-nightly: acme-leave (local)
 
-**Status:** complete · **Version:** first run → c8d93766 · **Hard stop:** 06:00 Asia/Jakarta (not reached)
+**Status:** complete · **Version:** first run → e0eab5e4 · **Hard stop:** 06:00 Asia/Jakarta (not reached)
 
 ## Specs
 - Smoke: 6 passed.
