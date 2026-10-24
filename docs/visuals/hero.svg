@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="theme.css" type="text/css"?>
+<!-- Hero banner: name, promise, and a sketch of apps → hub → board. Rendered by render.mjs. -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1280" height="400" viewBox="0 0 1280 400">
+  <defs>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="head-teal"/></marker>
+  </defs>
+  <rect class="bg" width="1280" height="400" rx="24"/>
+  <circle cx="1130" cy="40" r="210" class="fill-teal2" opacity="0.07"/>
+
+  <!-- Name and promise -->
+  <image href="../brand/key-mark.png" x="56" y="70" width="128" height="128"/>
+  <text x="196" y="136" class="h1" style="font-size:50px">Ownership Framework</text>
+  <text x="202" y="182" class="h2 t-teal">Own the quality of the apps you depend on</text>
+  <text x="58" y="262" class="body t-muted">Claude Code skills that set up and run your own QA hub:</text>
+  <text x="58" y="288" class="body t-muted">find bugs, prove them two ways, and hand developers a fix they can act on.</text>
+  <g transform="translate(58 320)">
+    <rect width="132" height="34" rx="17" class="panel-teal"/><text x="66" y="22" text-anchor="middle" class="small t-teal" font-weight="700">spec assurance</text>
+    <rect x="142" width="150" height="34" rx="17" class="panel-teal"/><text x="217" y="22" text-anchor="middle" class="small t-teal" font-weight="700">exploratory hunts</text>
+    <rect x="302" width="164" height="34" rx="17" class="panel-teal"/><text x="384" y="22" text-anchor="middle" class="small t-teal" font-weight="700">smoke + regression</text>
+    <rect x="476" width="150" height="34" rx="17" class="panel-amber"/><text x="551" y="22" text-anchor="middle" class="small t-amber" font-weight="700">nightly routines</text>
+  </g>
+
+  <!-- Sketch: apps → hub → board -->
+  <g transform="translate(812 70) scale(0.94)">
+    <!-- three app windows -->
+    <g>
+      <rect x="0" y="0" width="120" height="74" rx="8" class="panel"/><rect x="0" y="0" width="120" height="16" rx="8" class="fill-line"/>
+      <circle cx="10" cy="8" r="3" class="fill-panel"/><circle cx="20" cy="8" r="3" class="fill-panel"/>
+      <rect x="12" y="28" width="70" height="8" rx="4" class="fill-line"/><rect x="12" y="44" width="96" height="8" rx="4" class="fill-line"/>
+      <text x="60" y="94" text-anchor="middle" class="small t-muted">app A</text>
+    </g>
+    <g transform="translate(0 112)">
+      <rect x="0" y="0" width="120" height="74" rx="8" class="panel"/><rect x="0" y="0" width="120" height="16" rx="8" class="fill-line"/>
+      <circle cx="10" cy="8" r="3" class="fill-panel"/><circle cx="20" cy="8" r="3" class="fill-panel"/>
+      <rect x="12" y="28" width="96" height="8" rx="4" class="fill-line"/><rect x="12" y="44" width="56" height="8" rx="4" class="fill-line"/>
+      <text x="60" y="94" text-anchor="middle" class="small t-muted">app B</text>
+    </g>
+    <!-- hub -->
+    <path d="M128 37 C 170 37, 170 128, 198 128" class="flow-teal"/>
+    <path d="M128 149 C 160 149, 170 140, 198 136" class="flow-teal"/>
+    <rect x="206" y="78" width="120" height="112" rx="18" class="panel-teal"/>
+    <image href="../brand/key-mark.png" x="236" y="88" width="60" height="60"/>
+    <text x="266" y="174" text-anchor="middle" class="small t-teal" font-weight="800">QA hub</text>
+    <!-- board -->
+    <path d="M330 134 L 362 134" class="flow-teal"/>
+    <rect x="372" y="44" width="118" height="180" rx="12" class="panel"/>
+    <text x="431" y="68" text-anchor="middle" class="small" font-weight="800">board</text>
+    <g transform="translate(384 80)">
+      <rect width="94" height="26" rx="6" class="panel-red"/><circle cx="12" cy="13" r="5" class="fill-red"/><rect x="24" y="10" width="58" height="6" rx="3" class="fill-red" opacity="0.5"/>
+      <rect y="34" width="94" height="26" rx="6" class="panel-amber"/><circle cx="12" cy="47" r="5" class="fill-amber"/><rect x="24" y="44" width="50" height="6" rx="3" class="fill-amber" opacity="0.6"/>
+      <rect y="68" width="94" height="26" rx="6" class="panel-green"/><circle cx="12" cy="81" r="5" class="fill-green"/><rect x="24" y="78" width="62" height="6" rx="3" class="fill-green" opacity="0.5"/>
+      <rect y="104" width="94" height="30" rx="6" class="fill-line"/><path d="M42 111 L 54 119 L 42 127 z" class="fill-panel"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,122 @@
+[
+  {
+    "app": "acme-leave",
+    "id": "AL-1",
+    "title": "An employee can approve their own leave request (and a colleague's)",
+    "sev": "high",
+    "area": "approvals",
+    "summary": "The approve endpoint does not check who is calling. Any logged-in employee can approve their own request, or a colleague's, through the API. The page hides the Approve button, but the server accepts the call, so managers lose control over who is off.",
+    "steps": [
+      "Log in as Ben (employee).",
+      "Request one day of leave, for example Monday 4 February 2030. It appears as pending.",
+      "Send POST /api/requests/<id>/approve as Ben (from the browser console, or any HTTP client with his session).",
+      "Reload My leave: the request is approved and the balance went down by one day."
+    ],
+    "expected": {
+      "text": "Only a manager can approve, and nobody can decide their own request. Anyone else gets HTTP 403 and the request stays pending.",
+      "requirement": "R4",
+      "link": "apps/local/acme-leave/docs/prd.md#us-3-decide"
+    },
+    "actual": "HTTP 200. The request is stored as approved with decided_by = Ben's own user id.",
+    "where": {
+      "file": "src/leave.mjs",
+      "function": "approveRequest"
+    },
+    "how": {
+      "response": "POST /api/requests/1/approve as ben@acme.example → 200 {\"status\":\"approved\",\"decided_by\":2}",
+      "state": "SELECT status, decided_by FROM requests WHERE id = 1 → approved, 2 (Ben). Read-only query on the local database.",
+      "byDesignCheck": "PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-25: not by design."
+    },
+    "related": [],
+    "state": "open",
+    "hint": "In approveRequest, do what rejectRequest already does: refuse with 403 unless user.role is 'manager', and refuse with 403 when req.user_id === user.id. Check both before the UPDATE.",
+    "prd": "US-3 Decide",
+    "spec": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+    "video": "qa/acme-leave/videos/AL-1-employee-approves-own-request.webm",
+    "environment": "local, commit c8d93766",
+    "foundAt": "2026-10-25",
+    "run": "20261025-0006-nightly",
+    "fixPrompt": "Fix bug AL-1 in acme-leave (../app, branch main).\n\n## The bug: An employee can approve their own leave request (and a colleague's)\nThe approve endpoint does not check who is calling. Any logged-in employee can approve their own request, or a colleague's, through the API. The page hides the Approve button, but the server accepts the call, so managers lose control over who is off.\n\nWhere: src/leave.mjs, function `approveRequest`\n\n## Why it is wrong\nRequirement R4 (US-3 Decide), apps/local/acme-leave/docs/prd.md#us-3-decide: Only a manager can approve, and nobody can decide their own request. Anyone else gets HTTP 403 and the request stays pending.\nActual: HTTP 200. The request is stored as approved with decided_by = Ben's own user id.\n\n## How it was confirmed\n- Response: POST /api/requests/1/approve as ben@acme.example → 200 {\"status\":\"approved\",\"decided_by\":2}\n- Stored state: SELECT status, decided_by FROM requests WHERE id = 1 → approved, 2 (Ben). Read-only query on the local database.\n- Not by design: PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-25: not by design.\n\n## Steps to reproduce\n1. Log in as Ben (employee).\n2. Request one day of leave, for example Monday 4 February 2030. It appears as pending.\n3. Send POST /api/requests/<id>/approve as Ben (from the browser console, or any HTTP client with his session).\n4. Reload My leave: the request is approved and the balance went down by one day.\n\n## The fix\nIn approveRequest, do what rejectRequest already does: refuse with 403 unless user.role is 'manager', and refuse with 403 when req.user_id === user.id. Check both before the UPDATE.\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/approvals.spec.mjs` (test \"R4 an employee cannot approve their own request\", \"R4 an employee cannot approve a colleague\\'s request\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R4.\n- No other behaviour changes. Do not edit the QA hub."
+  },
+  {
+    "app": "acme-leave",
+    "id": "AL-2",
+    "title": "Weekend days are charged as leave",
+    "sev": "high",
+    "area": "requests",
+    "summary": "The length of a request counts calendar days instead of working days. A Friday-to-Monday request is charged as 4 days instead of 2, so employees lose leave they never take.",
+    "steps": [
+      "Log in as Cleo (employee).",
+      "Request leave from Friday 8 March 2030 to Monday 11 March 2030.",
+      "Look at the Days column in My requests: it says 4.",
+      "Have a manager approve it: the balance drops by 4."
+    ],
+    "expected": {
+      "text": "Only Monday to Friday count. Worked out by hand: Friday 8 + Monday 11 March 2030 = 2 working days; Saturday 9 and Sunday 10 do not count.",
+      "requirement": "R2",
+      "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave"
+    },
+    "actual": "The request is stored with days = 4, and an approval takes 4 days off the balance.",
+    "where": {
+      "file": "src/leave.mjs",
+      "function": "countDays"
+    },
+    "how": {
+      "response": "POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}",
+      "state": "SELECT days FROM requests WHERE id = <id> → 4. After approval GET /api/balance → used went up by 4.",
+      "byDesignCheck": "PRD R2 says working days only, with this exact example. Not by design."
+    },
+    "related": [
+      "AL-3"
+    ],
+    "state": "open",
+    "hint": "Make countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).",
+    "prd": "US-2 Request leave",
+    "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
+    "video": "qa/acme-leave/videos/AL-2-weekend-days-are-counted-as-leave.webm",
+    "environment": "local, commit c8d93766",
+    "foundAt": "2026-10-25",
+    "run": "20261025-0006-nightly",
+    "fixPrompt": "Fix bug AL-2 in acme-leave (../app, branch main).\n\n## The bug: Weekend days are charged as leave\nThe length of a request counts calendar days instead of working days. A Friday-to-Monday request is charged as 4 days instead of 2, so employees lose leave they never take.\n\nWhere: src/leave.mjs, function `countDays`\n\n## Why it is wrong\nRequirement R2 (US-2 Request leave), apps/local/acme-leave/docs/prd.md#us-2-request-leave: Only Monday to Friday count. Worked out by hand: Friday 8 + Monday 11 March 2030 = 2 working days; Saturday 9 and Sunday 10 do not count.\nActual: The request is stored with days = 4, and an approval takes 4 days off the balance.\n\n## How it was confirmed\n- Response: POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}\n- Stored state: SELECT days FROM requests WHERE id = <id> → 4. After approval GET /api/balance → used went up by 4.\n- Not by design: PRD R2 says working days only, with this exact example. Not by design.\n\n## Steps to reproduce\n1. Log in as Cleo (employee).\n2. Request leave from Friday 8 March 2030 to Monday 11 March 2030.\n3. Look at the Days column in My requests: it says 4.\n4. Have a manager approve it: the balance drops by 4.\n\n## The fix\nMake countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/requests.spec.mjs` (test \"R2 a Friday-to-Monday request counts 2 working days\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R2.\n- No other behaviour changes. Do not edit the QA hub."
+  },
+  {
+    "app": "acme-leave",
+    "id": "AL-3",
+    "title": "An end date before the start date is accepted, with negative days",
+    "sev": "medium",
+    "area": "requests",
+    "summary": "A request whose end date is before its start date is saved instead of refused. Its day count is negative, so if a manager approves it the employee's balance goes up.",
+    "steps": [
+      "Log in as Ben (employee).",
+      "Request leave from 15 March 2030 to 13 March 2030 (dates the wrong way round).",
+      "No error is shown; the request appears as pending with -1 days."
+    ],
+    "expected": {
+      "text": "The end date must be on or after the start date, and the request must contain at least one working day; otherwise HTTP 400 with a message, and nothing is saved.",
+      "requirement": "R3",
+      "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave"
+    },
+    "actual": "HTTP 201. The request is stored with days = -1 and status pending.",
+    "where": {
+      "file": "src/leave.mjs",
+      "function": "createRequest"
+    },
+    "how": {
+      "response": "POST /api/requests {start: 2030-03-15, end: 2030-03-13} → 201 {\"days\":-1}",
+      "state": "SELECT start_date, end_date, days FROM requests WHERE days < 1 → 2030-03-15, 2030-03-13, -1.",
+      "byDesignCheck": "PRD R3 is explicit. Not by design."
+    },
+    "related": [
+      "AL-2"
+    ],
+    "state": "open",
+    "hint": "In createRequest, after checking the dates are valid, refuse with 400 when end < start, and (once AL-2 is fixed) when the working-day count is below 1. Do this before the balance check and the INSERT.",
+    "prd": "US-2 Request leave",
+    "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
+    "video": "qa/acme-leave/videos/AL-3-end-date-before-start-date-is-accepted.webm",
+    "environment": "local, commit c8d93766",
+    "foundAt": "2026-10-25",
+    "run": "20261025-0006-nightly",
+    "fixPrompt": "Fix bug AL-3 in acme-leave (../app, branch main).\n\n## The bug: An end date before the start date is accepted, with negative days\nA request whose end date is before its start date is saved instead of refused. Its day count is negative, so if a manager approves it the employee's balance goes up.\n\nWhere: src/leave.mjs, function `createRequest`\n\n## Why it is wrong\nRequirement R3 (US-2 Request leave), apps/local/acme-leave/docs/prd.md#us-2-request-leave: The end date must be on or after the start date, and the request must contain at least one working day; otherwise HTTP 400 with a message, and nothing is saved.\nActual: HTTP 201. The request is stored with days = -1 and status pending.\n\n## How it was confirmed\n- Response: POST /api/requests {start: 2030-03-15, end: 2030-03-13} → 201 {\"days\":-1}\n- Stored state: SELECT start_date, end_date, days FROM requests WHERE days < 1 → 2030-03-15, 2030-03-13, -1.\n- Not by design: PRD R3 is explicit. Not by design.\n\n## Steps to reproduce\n1. Log in as Ben (employee).\n2. Request leave from 15 March 2030 to 13 March 2030 (dates the wrong way round).\n3. No error is shown; the request appears as pending with -1 days.\n\n## The fix\nIn createRequest, after checking the dates are valid, refuse with 400 when end < start, and (once AL-2 is fixed) when the working-day count is below 1. Do this before the balance check and the INSERT.\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/requests.spec.mjs` (test \"R3 an end date before the start date is refused and nothing is saved\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R3.\n- No other behaviour changes. Do not edit the QA hub."
+  }
+]

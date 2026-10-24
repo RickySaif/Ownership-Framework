@@ -272,14 +272,23 @@
         el('td', {}, c.verdict ? pill(c.verdict === 'pass' ? 'r-passed' : c.verdict === 'fail' ? 'r-new-regression' : 'r-skipped', c.verdict) : '–'))))));
   }
 
-  const h = location.hash.slice(1);
-  if (h.startsWith('bug=')) { current = h.slice(4); showTab('bugs'); renderList(); select(current, true); }
-  else {
+  // Links like #runs, #coverage or #bug=AL-2 open that view, on load and when the hash changes.
+  function route(first) {
+    const h = location.hash.slice(1);
+    if (h.startsWith('bug=')) {
+      current = h.slice(4);
+      showTab('bugs');
+      renderList();
+      select(current, true);
+      return;
+    }
     let saved = 'bugs';
     try { saved = localStorage.getItem('qa-board-tab') || 'bugs'; } catch (e) { /* storage blocked */ }
-    showTab(['bugs', 'runs', 'coverage'].includes(h) ? h : saved);
-    renderList();
+    showTab(['bugs', 'runs', 'coverage'].includes(h) ? h : first ? saved : 'bugs');
+    if (first) renderList();
   }
+  window.addEventListener('hashchange', () => route(false));
+  route(true);
 })();
 </script>
 </body>

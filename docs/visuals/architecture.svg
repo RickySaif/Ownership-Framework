@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="theme.css" type="text/css"?>
+<!-- How it fits together: app repos → apps/ (read-only) → graph → test skills (Playwright, environments, DB) → deliverables → board. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="head"/></marker>
+    <marker id="arrow-teal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="head-teal"/></marker>
+  </defs>
+  <rect class="bg" width="1280" height="620" rx="20"/>
+  <text x="40" y="52" class="h2">How it fits together</text>
+  <text x="40" y="80" class="body t-muted">One QA hub repo, separate from the apps it tests. Source in, evidence out.</text>
+
+  <!-- 1. App repos -->
+  <text x="40" y="128" class="label">1 · App repos</text>
+  <g transform="translate(40 142)">
+    <rect width="170" height="64" rx="10" class="panel"/>
+    <text x="16" y="28" class="body" font-weight="700">acme-leave</text>
+    <text x="16" y="49" class="small t-muted mono">main @ tip</text>
+    <rect y="80" width="170" height="64" rx="10" class="panel"/>
+    <text x="16" y="108" class="body" font-weight="700">acme-payroll</text>
+    <text x="16" y="129" class="small t-muted mono">develop @ tip</text>
+    <text x="0" y="172" class="small t-muted">GitHub or GitLab.</text>
+    <text x="0" y="190" class="small t-muted">Token from the keychain.</text>
+  </g>
+
+  <!-- 2. apps/ + graph -->
+  <path d="M214 214 L 262 214" class="flow"/>
+  <text x="270" y="128" class="label">2 · Read-only source</text>
+  <g transform="translate(270 142)">
+    <rect width="190" height="104" rx="10" class="panel"/>
+    <text x="16" y="30" class="body mono" font-weight="700">apps/</text>
+    <text x="16" y="54" class="small t-muted">downloaded copies,</text>
+    <text x="16" y="72" class="small t-muted">never edited or committed</text>
+    <rect x="148" y="14" width="26" height="20" rx="4" class="fill-amber"/><path d="M153 14 v-6 a8 8 0 0 1 16 0 v6" stroke-width="3" fill="none" style="stroke: var(--amber-2)"/>
+    <text x="16" y="94" class="small t-teal mono">npm run sync · sync:check</text>
+    <path d="M95 108 L 95 140" class="flow"/>
+    <rect y="148" width="190" height="80" rx="10" class="panel-teal"/>
+    <text x="16" y="178" class="body" font-weight="700">Graphify graph</text>
+    <text x="16" y="200" class="small t-muted">asked first, so Claude</text>
+    <text x="16" y="217" class="small t-muted">reads only the right files</text>
+  </g>
+
+  <!-- 3. Test skills -->
+  <path d="M464 214 L 512 214" class="flow"/>
+  <path d="M464 330 C 492 330, 492 260, 512 250" class="flow dash"/>
+  <text x="520" y="128" class="label">3 · Test skills (Claude Code)</text>
+  <g transform="translate(520 142)">
+    <rect width="380" height="300" rx="14" class="panel"/>
+    <rect x="16" y="16" width="168" height="56" rx="10" class="panel-teal"/><text x="100" y="40" text-anchor="middle" class="body t-teal" font-weight="700">spec assurance</text><text x="100" y="60" text-anchor="middle" class="small t-muted">requirements → checks</text>
+    <rect x="196" y="16" width="168" height="56" rx="10" class="panel-teal"/><text x="280" y="40" text-anchor="middle" class="body t-teal" font-weight="700">exploratory hunt</text><text x="280" y="60" text-anchor="middle" class="small t-muted">charters, roles, edges</text>
+    <rect x="16" y="84" width="168" height="56" rx="10" class="panel-teal"/><text x="100" y="108" text-anchor="middle" class="body t-teal" font-weight="700">smoke check</text><text x="100" y="128" text-anchor="middle" class="small t-muted">up? core flows alive?</text>
+    <rect x="196" y="84" width="168" height="56" rx="10" class="panel-teal"/><text x="280" y="108" text-anchor="middle" class="body t-teal" font-weight="700">regression run</text><text x="280" y="128" text-anchor="middle" class="small t-muted">every spec, sorted</text>
+    <rect x="16" y="154" width="348" height="34" rx="8" class="fill-line" opacity="0.55"/>
+    <text x="190" y="176" text-anchor="middle" class="small" font-weight="700">Playwright specs  ·  Playwright MCP for live looks</text>
+    <text x="16" y="214" class="label">against</text>
+    <rect x="16" y="224" width="78" height="30" rx="15" class="panel-green"/><text x="55" y="244" text-anchor="middle" class="small t-green" font-weight="700">local</text>
+    <rect x="102" y="224" width="70" height="30" rx="15" class="panel-amber"/><text x="137" y="244" text-anchor="middle" class="small t-amber" font-weight="700">dev</text>
+    <rect x="180" y="224" width="86" height="30" rx="15" class="panel-amber"/><text x="223" y="244" text-anchor="middle" class="small t-amber" font-weight="700">staging</text>
+    <rect x="274" y="224" width="90" height="30" rx="15" class="panel-red"/><text x="319" y="244" text-anchor="middle" class="small t-red" font-weight="700">prod: smoke</text>
+    <g transform="translate(16 266)">
+      <ellipse cx="12" cy="4" rx="12" ry="4" class="fill-muted"/><rect x="0" y="4" width="24" height="16" class="fill-muted"/><ellipse cx="12" cy="20" rx="12" ry="4" class="fill-muted"/>
+      <text x="34" y="18" class="small">database: confirm state, set up data, move dates</text>
+    </g>
+  </g>
+
+  <!-- 4. Deliverables -->
+  <path d="M904 290 L 942 290" class="flow-teal"/>
+  <text x="950" y="128" class="label">4 · Per bug</text>
+  <g transform="translate(950 142)">
+    <rect width="172" height="50" rx="10" class="panel"/><text x="16" y="31" class="body" font-weight="700">Bug file</text>
+    <rect y="62" width="172" height="50" rx="10" class="panel"/><text x="16" y="93" class="body" font-weight="700">Captioned video</text>
+    <rect y="124" width="172" height="50" rx="10" class="panel"/><text x="16" y="148" class="body" font-weight="700">Regression spec</text><text x="14" y="166" class="small t-muted mono">knownBug('AL-1')</text>
+    <rect y="186" width="172" height="50" rx="10" class="panel"/><text x="16" y="217" class="body" font-weight="700">Fix prompt</text>
+    <rect y="248" width="172" height="50" rx="10" class="panel"/><text x="16" y="279" class="body" font-weight="700">Requirement map</text>
+  </g>
+
+  <!-- 5. Board -->
+  <path d="M1126 290 L 1152 290" class="flow-teal"/>
+  <text x="1160" y="128" class="label">5 · Board</text>
+  <g transform="translate(1160 142) scale(0.86 1)">
+    <rect width="96" height="298" rx="12" class="panel-teal"/>
+    <rect x="12" y="16" width="72" height="22" rx="5" class="panel-red"/>
+    <rect x="12" y="46" width="72" height="22" rx="5" class="panel-amber"/>
+    <rect x="12" y="76" width="72" height="22" rx="5" class="panel-green"/>
+    <rect x="12" y="110" width="72" height="44" rx="6" class="fill-line"/><path d="M42 122 L 54 132 L 42 142 z" class="fill-panel"/>
+    <rect x="12" y="166" width="72" height="24" rx="12" class="fill-teal"/><text x="48" y="183" text-anchor="middle" class="small t-bg" font-weight="800">copy</text>
+    <text x="48" y="222" text-anchor="middle" class="small t-teal" font-weight="700">bugs</text>
+    <text x="48" y="242" text-anchor="middle" class="small t-teal" font-weight="700">runs</text>
+    <text x="48" y="262" text-anchor="middle" class="small t-teal" font-weight="700">coverage</text>
+  </g>
+
+  <!-- Footer: routines -->
+  <rect x="40" y="476" width="1200" height="104" rx="14" class="panel-amber"/>
+  <text x="64" y="512" class="h3 t-amber">Routines run the loop for you</text>
+  <text x="64" y="540" class="body">Nightly: sync the tip, run every spec, explore only what changed, clean up from the ledger, rebuild the board.</text>
+  <text x="64" y="562" class="body">Weekly: a deeper hunt and a requirements pass over one area. Results land on a branch and go through a pull request.</text>
+</svg>

@@ -16,11 +16,14 @@
     "link": "apps/local/acme-leave/docs/prd.md#us-3-decide"
   },
   "actual": "HTTP 200. The request is stored as approved with decided_by = Ben's own user id.",
-  "where": { "file": "src/leave.mjs", "function": "approveRequest" },
+  "where": {
+    "file": "src/leave.mjs",
+    "function": "approveRequest"
+  },
   "how": {
     "response": "POST /api/requests/1/approve as ben@acme.example → 200 {\"status\":\"approved\",\"decided_by\":2}",
     "state": "SELECT status, decided_by FROM requests WHERE id = 1 → approved, 2 (Ben). Read-only query on the local database.",
-    "byDesignCheck": "PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-23: not by design."
+    "byDesignCheck": "PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-25: not by design."
   },
   "related": [],
   "state": "open",
@@ -28,7 +31,7 @@
   "prd": "US-3 Decide",
   "spec": "qa/acme-leave/specs/regression/approvals.spec.mjs",
   "video": "qa/acme-leave/videos/AL-1-employee-approves-own-request.webm",
-  "environment": "local (example app)",
-  "foundAt": "2026-10-23",
-  "run": "20261023-0130-nightly"
+  "environment": "local, commit c8d93766",
+  "foundAt": "2026-10-25",
+  "run": "20261025-0006-nightly"
 }

@@ -1,7 +1,7 @@
 {
   "app": "acme-leave",
   "source": "apps/local/acme-leave/docs/prd.md",
-  "checkedAt": "2026-10-23",
+  "checkedAt": "2026-10-25",
   "run": "spec-assurance pass, all areas",
   "rules": [
     { "id": "R1", "story": "US-1 Balance", "link": "apps/local/acme-leave/docs/prd.md#us-1-balance", "text": "20 working days of leave per calendar year", "verdict": "pass" },

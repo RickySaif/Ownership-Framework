@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="theme.css" type="text/css"?>
+<!-- Safety by environment: local / dev / staging / production × read / write / who approves. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="520" viewBox="0 0 1280 520">
+  <rect class="bg" width="1280" height="520" rx="20"/>
+  <text x="40" y="52" class="h2">Safety by environment</text>
+  <text x="40" y="80" class="body t-muted">What the AI may do with the app and its database in each environment.</text>
+
+  <g transform="translate(40 108)">
+    <rect width="1200" height="384" rx="14" class="panel"/>
+    <text x="24" y="40" class="label">Environment</text>
+    <text x="300" y="40" class="label">Read</text>
+    <text x="560" y="40" class="label">Write</text>
+    <text x="920" y="40" class="label">Who approves</text>
+    <line x1="16" y1="58" x2="1184" y2="58" class="line"/>
+
+    <!-- local -->
+    <text x="24" y="98" class="h3">Local</text><text x="24" y="120" class="small t-muted">throw-away copy on your machine</text>
+    <rect x="290" y="80" width="240" height="44" rx="10" class="panel-green"/><text x="306" y="107" class="small t-green" font-weight="700">✓ everything</text>
+    <rect x="550" y="80" width="350" height="44" rx="10" class="panel-green"/><text x="566" y="100" class="small t-green" font-weight="700">✓ full, free to reset</text><text x="566" y="117" class="small t-muted">only if QA_ISOLATED_DB names the local DB</text>
+    <text x="920" y="107" class="small">You</text>
+    <line x1="16" y1="142" x2="1184" y2="142" class="line"/>
+
+    <!-- dev -->
+    <text x="24" y="182" class="h3">Dev</text><text x="24" y="204" class="small t-muted">shared test environment</text>
+    <rect x="290" y="164" width="240" height="44" rx="10" class="panel-green"/><text x="306" y="191" class="small t-green" font-weight="700">✓ always fine</text>
+    <rect x="550" y="164" width="350" height="44" rx="10" class="panel-amber"/><text x="566" y="184" class="small t-amber" font-weight="700">only rows the run created</text><text x="566" y="201" class="small t-muted">1 transaction · row cap · before/after logged</text>
+    <text x="920" y="184" class="small">App owner, by agreeing to</text><text x="920" y="202" class="small">the registry entry</text>
+    <line x1="16" y1="226" x2="1184" y2="226" class="line"/>
+
+    <!-- staging -->
+    <text x="24" y="266" class="h3">Staging</text><text x="24" y="288" class="small t-muted">shared, close to production</text>
+    <rect x="290" y="248" width="240" height="44" rx="10" class="panel-green"/><text x="306" y="275" class="small t-green" font-weight="700">✓ always fine</text>
+    <rect x="550" y="248" width="350" height="44" rx="10" class="panel-amber"/><text x="566" y="268" class="small t-amber" font-weight="700">same as dev</text><text x="566" y="285" class="small t-muted">unattended: snapshot first, or nightly restore</text>
+    <text x="920" y="268" class="small">App owner, by agreeing to</text><text x="920" y="286" class="small">the registry entry</text>
+    <line x1="16" y1="310" x2="1184" y2="310" class="line"/>
+
+    <!-- production -->
+    <text x="24" y="346" class="h3 t-red">Production</text><text x="24" y="368" class="small t-muted">real users</text>
+    <rect x="290" y="326" width="240" height="40" rx="10" class="panel-amber"/><text x="306" y="351" class="small t-amber" font-weight="700">smoke on synthetic accounts</text>
+    <rect x="550" y="326" width="350" height="40" rx="10" class="panel-red"/><text x="566" y="351" class="small t-red" font-weight="700">✕ never by the AI</text>
+    <text x="920" y="342" class="small">Written, time-boxed exception</text><text x="920" y="360" class="small t-muted">in CLAUDE.md: who, scope, end date</text>
+  </g>
+</svg>

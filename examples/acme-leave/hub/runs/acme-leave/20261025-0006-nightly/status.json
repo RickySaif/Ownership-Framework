@@ -1,0 +1,43 @@
+{
+  "app": "acme-leave",
+  "runId": "20261025-0006-nightly",
+  "mode": "nightly",
+  "environment": "local",
+  "started": "2026-10-24T17:06:24.233Z",
+  "finished": "2026-10-24T17:08:19.891Z",
+  "hardStop": "2026-10-24T23:00:00.232Z",
+  "status": "complete",
+  "versions": {
+    "old": null,
+    "new": "c8d93766fbeca584424a62599249bd6774ae510a"
+  },
+  "newFindings": [
+    "AL-1",
+    "AL-2",
+    "AL-3"
+  ],
+  "possiblyFixed": [],
+  "regressions": [],
+  "specs": {
+    "smoke": {
+      "total": 6,
+      "passed": 6
+    },
+    "regression": {
+      "total": 14,
+      "known-bug-open": 4,
+      "passed": 10
+    }
+  },
+  "explored": [
+    "approvals (charter 01)",
+    "request dates (charter 02)"
+  ],
+  "notExplored": [
+    "manager approving their own request via the API",
+    "a weekend-only request (0 working days)"
+  ],
+  "notes": [
+    "First run of this hub: no previous tested commit, so the whole app was in scope."
+  ]
+}

@@ -1,0 +1,188 @@
+[
+  {
+    "app": "acme-leave",
+    "runId": "20261025-0006-nightly",
+    "mode": "nightly",
+    "environment": "local",
+    "started": "2026-10-24T17:06:24.233Z",
+    "finished": "2026-10-24T17:08:19.891Z",
+    "hardStop": "2026-10-24T23:00:00.232Z",
+    "status": "complete",
+    "versions": {
+      "old": null,
+      "new": "c8d93766fbeca584424a62599249bd6774ae510a"
+    },
+    "newFindings": [
+      "AL-1",
+      "AL-2",
+      "AL-3"
+    ],
+    "possiblyFixed": [],
+    "regressions": [],
+    "specs": {
+      "smoke": {
+        "total": 6,
+        "passed": 6
+      },
+      "regression": {
+        "total": 14,
+        "known-bug-open": 4,
+        "passed": 10
+      }
+    },
+    "explored": [
+      "approvals (charter 01)",
+      "request dates (charter 02)"
+    ],
+    "notExplored": [
+      "manager approving their own request via the API",
+      "a weekend-only request (0 working days)"
+    ],
+    "notes": [
+      "First run of this hub: no previous tested commit, so the whole app was in scope."
+    ],
+    "report": "# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → c8d93766 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n",
+    "tests": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "approvals › R4 an employee cannot approve their own request",
+        "result": "known-bug-open",
+        "knownBug": "AL-1"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "approvals › R4 an employee cannot approve a colleague's request",
+        "result": "known-bug-open",
+        "knownBug": "AL-1"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "approvals › R4 a manager approves an employee's request",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "approvals › R4 an employee cannot reject a request",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "approvals › R10 a decided request cannot be decided again",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "balance and privacy › R1 R5 the entitlement is 20 days and a pending request does not count",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "balance and privacy › R8 an employee cannot see the team list",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "balance and privacy › R8 an employee sees only their own requests",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R2 a Friday-to-Monday request counts 2 working days",
+        "result": "known-bug-open",
+        "knownBug": "AL-2"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R2 a Monday-to-Friday week counts 5 working days",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R3 an end date before the start date is refused and nothing is saved",
+        "result": "known-bug-open",
+        "knownBug": "AL-3"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R7 a request longer than the remaining balance is refused",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R9 a request across two calendar years is refused",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "requests › R6 only the requester can cancel a pending request",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+        "title": "acme-leave core flows › the app is up",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+        "title": "acme-leave core flows › employee sees their balance and their requests",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+        "title": "acme-leave core flows › manager can open the team list",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+        "title": "acme-leave smoke › manager can log in",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+        "title": "acme-leave smoke › employee can log in",
+        "result": "passed",
+        "knownBug": null
+      },
+      {
+        "suite": "smoke",
+        "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+        "title": "acme-leave smoke › employee2 can log in",
+        "result": "passed",
+        "knownBug": null
+      }
+    ]
+  }
+]

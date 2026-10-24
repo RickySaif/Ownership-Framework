@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QA Board</title>
+<style>
+  :root {
+    --bg: #f8fafc; --panel: #ffffff; --ink: #0f172a; --muted: #64748b; --line: #e2e8f0; --brand: #0f766e; --brand-2: #14b8a6;
+    --amber: #b45309; --amber-bg: #fef3c7; --red: #b91c1c; --red-bg: #fee2e2; --green: #15803d; --green-bg: #dcfce7; --blue: #1d4ed8; --blue-bg: #dbeafe;
+    --code: #f1f5f9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0b1120; --panel: #111827; --ink: #e2e8f0; --muted: #94a3b8; --line: #1f2a3d; --brand: #2dd4bf; --brand-2: #14b8a6;
+      --amber: #fbbf24; --amber-bg: #3a2a0a; --red: #fca5a5; --red-bg: #3b1212; --green: #86efac; --green-bg: #0f2e1b; --blue: #93c5fd; --blue-bg: #13233f;
+      --code: #0f172a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b1120; --panel: #111827; --ink: #e2e8f0; --muted: #94a3b8; --line: #1f2a3d; --brand: #2dd4bf; --brand-2: #14b8a6;
+    --amber: #fbbf24; --amber-bg: #3a2a0a; --red: #fca5a5; --red-bg: #3b1212; --green: #86efac; --green-bg: #0f2e1b; --blue: #93c5fd; --blue-bg: #13233f;
+    --code: #0f172a;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  header { display: flex; align-items: center; gap: 16px; padding: 14px 24px; border-bottom: 1px solid var(--line); background: var(--panel); position: sticky; top: 0; z-index: 2; }
+  header h1 { font-size: 17px; margin: 0; }
+  header .sub { color: var(--muted); font-size: 12px; }
+  nav.tabs { display: flex; gap: 4px; margin-left: auto; }
+  nav.tabs button { border: 1px solid var(--line); background: transparent; color: var(--ink); padding: 6px 14px; border-radius: 8px; font: inherit; cursor: pointer; }
+  nav.tabs button[aria-selected="true"] { background: var(--brand); border-color: var(--brand); color: var(--bg); font-weight: 600; }
+  main { padding: 20px 24px 48px; max-width: 1400px; margin: 0 auto; }
+  .banner { display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; padding: 12px 16px; border-radius: 10px; margin-bottom: 18px; border: 1px solid var(--line); background: var(--panel); }
+  .banner strong { font-size: 15px; }
+  .banner.complete { border-left: 5px solid var(--green); }
+  .banner.inconclusive { border-left: 5px solid var(--amber); }
+  .banner.aborted { border-left: 5px solid var(--red); }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .sev-critical { background: var(--red); color: var(--bg); } .sev-high { background: var(--red-bg); color: var(--red); }
+  .sev-medium { background: var(--amber-bg); color: var(--amber); } .sev-low { background: var(--blue-bg); color: var(--blue); }
+  .st-open { background: var(--red-bg); color: var(--red); } .st-fixed { background: var(--green-bg); color: var(--green); }
+  .st-wontfix, .st-by-design { background: var(--code); color: var(--muted); }
+  .r-passed, .r-complete { background: var(--green-bg); color: var(--green); } .r-new-regression, .r-error, .r-aborted { background: var(--red); color: var(--bg); }
+  .r-known-bug-open, .r-inconclusive { background: var(--amber-bg); color: var(--amber); } .r-possibly-fixed { background: var(--blue-bg); color: var(--blue); }
+  .r-flaky, .r-skipped, .r-none { background: var(--code); color: var(--muted); }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .filters select, .filters input { font: inherit; padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); color: var(--ink); }
+  .filters input { min-width: 220px; flex: 1; }
+  .split { display: grid; grid-template-columns: minmax(280px, 400px) 1fr; gap: 18px; align-items: start; }
+  .list { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; background: var(--panel); }
+  .list button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); padding: 10px 14px; font: inherit; cursor: pointer; }
+  .list button:last-child { border-bottom: 0; }
+  .list button[aria-current="true"] { background: var(--code); box-shadow: inset 4px 0 0 var(--brand); }
+  .list .id { font-weight: 700; margin-right: 6px; }
+  .list .meta { display: flex; gap: 6px; margin-top: 4px; flex-wrap: wrap; }
+  .detail { border: 1px solid var(--line); border-radius: 10px; background: var(--panel); padding: 18px 22px; min-height: 300px; }
+  .detail h2 { margin: 0 0 6px; font-size: 19px; }
+  .detail h3 { margin: 18px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  .detail video { width: 100%; max-height: 420px; border-radius: 8px; background: #000; margin-top: 8px; }
+  .kv { display: grid; grid-template-columns: 120px 1fr; gap: 4px 12px; }
+  .kv dt { color: var(--muted); }
+  .kv dd { margin: 0; }
+  ol { padding-left: 20px; margin: 4px 0; }
+  code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+  code { background: var(--code); padding: 1px 5px; border-radius: 4px; }
+  pre { background: var(--code); padding: 12px 14px; border-radius: 8px; overflow: auto; white-space: pre-wrap; max-height: 360px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .btn { border: 0; background: var(--brand); color: var(--bg); padding: 8px 14px; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
+  .btn.secondary { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .copied { color: var(--green); font-weight: 600; align-self: center; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  a { color: var(--brand); }
+  .empty { color: var(--muted); padding: 24px; text-align: center; }
+  footer { color: var(--muted); font-size: 12px; text-align: center; padding: 16px; }
+  @media (max-width: 860px) {
+    .split { grid-template-columns: 1fr; }
+    header { flex-wrap: wrap; padding: 12px 16px; }
+    nav.tabs { margin-left: 0; }
+    main { padding: 16px; }
+    .kv { grid-template-columns: 1fr; }
+    table { display: block; overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 id="hub-name">QA Board</h1>
+    <div class="sub" id="generated"></div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-tab="bugs" aria-selected="true">Bugs</button>
+    <button role="tab" data-tab="runs" aria-selected="false">Runs</button>
+    <button role="tab" data-tab="coverage" aria-selected="false">Coverage</button>
+  </nav>
+</header>
+<main>
+  <div id="latest"></div>
+  <section id="tab-bugs">
+    <div class="filters">
+      <select id="f-app" aria-label="App"></select>
+      <select id="f-sev" aria-label="Severity"><option value="">All severities</option><option>critical</option><option>high</option><option>medium</option><option>low</option></select>
+      <select id="f-state" aria-label="State"><option value="">All states</option><option selected>open</option><option>fixed</option><option>wontfix</option><option>by-design</option></select>
+      <input id="f-q" type="search" placeholder="Search title, area, requirement…" aria-label="Search">
+    </div>
+    <div class="split">
+      <div class="list" id="bug-list"></div>
+      <article class="detail" id="bug-detail"></article>
+    </div>
+  </section>
+  <section id="tab-runs" hidden></section>
+  <section id="tab-coverage" hidden></section>
+</main>
+<footer>Built with the Ownership Framework QA skills</footer>
+<script>
+(function () {
+  const DATA = {"generated":"2026-10-24T17:33:42.384Z","hub":"Acme QA Hub","timezone":"Asia/Jakarta","apps":[{"name":"acme-leave","owner":{"name":"Dana Owner (fictional)","contact":"dana@acme.example"},"repo":"../app","branch":"main","environments":["local","staging"],"source":{"app":"acme-leave","environment":"local","provider":"path","source":"../app","branch":"main","mode":"tip","checkedOut":"c8d93766fbeca584424a62599249bd6774ae510a","tipSha":"c8d93766fbeca584424a62599249bd6774ae510a","deployedSha":null,"tipAheadOfDeployed":null,"lastTested":"c8d93766fbeca584424a62599249bd6774ae510a","commitsSinceLastTested":0,"filesChangedSinceLastTested":[],"graph":"graphify-out/local/acme-leave","syncedAt":"2026-10-24T17:32:52.349Z"},"requirements":[{"type":"markdown","location":"apps/local/acme-leave/docs/prd.md"}]}],"bugs":[{"app":"acme-leave","id":"AL-1","title":"An employee can approve their own leave request (and a colleague's)","sev":"high","area":"approvals","summary":"The approve endpoint does not check who is calling. Any logged-in employee can approve their own request, or a colleague's, through the API. The page hides the Approve button, but the server accepts the call, so managers lose control over who is off.","steps":["Log in as Ben (employee).","Request one day of leave, for example Monday 4 February 2030. It appears as pending.","Send POST /api/requests/\u003cid>/approve as Ben (from the browser console, or any HTTP client with his session).","Reload My leave: the request is approved and the balance went down by one day."],"expected":{"text":"Only a manager can approve, and nobody can decide their own request. Anyone else gets HTTP 403 and the request stays pending.","requirement":"R4","link":"apps/local/acme-leave/docs/prd.md#us-3-decide"},"actual":"HTTP 200. The request is stored as approved with decided_by = Ben's own user id.","where":{"file":"src/leave.mjs","function":"approveRequest"},"how":{"response":"POST /api/requests/1/approve as ben@acme.example → 200 {\"status\":\"approved\",\"decided_by\":2}","state":"SELECT status, decided_by FROM requests WHERE id = 1 → approved, 2 (Ben). Read-only query on the local database.","byDesignCheck":"PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-25: not by design."},"related":[],"state":"open","hint":"In approveRequest, do what rejectRequest already does: refuse with 403 unless user.role is 'manager', and refuse with 403 when req.user_id === user.id. Check both before the UPDATE.","prd":"US-3 Decide","spec":"qa/acme-leave/specs/regression/approvals.spec.mjs","video":"qa/acme-leave/videos/AL-1-employee-approves-own-request.webm","environment":"local, commit c8d93766","foundAt":"2026-10-25","run":"20261025-0006-nightly","fixPrompt":"Fix bug AL-1 in acme-leave (../app, branch main).\n\n## The bug: An employee can approve their own leave request (and a colleague's)\nThe approve endpoint does not check who is calling. Any logged-in employee can approve their own request, or a colleague's, through the API. The page hides the Approve button, but the server accepts the call, so managers lose control over who is off.\n\nWhere: src/leave.mjs, function `approveRequest`\n\n## Why it is wrong\nRequirement R4 (US-3 Decide), apps/local/acme-leave/docs/prd.md#us-3-decide: Only a manager can approve, and nobody can decide their own request. Anyone else gets HTTP 403 and the request stays pending.\nActual: HTTP 200. The request is stored as approved with decided_by = Ben's own user id.\n\n## How it was confirmed\n- Response: POST /api/requests/1/approve as ben@acme.example → 200 {\"status\":\"approved\",\"decided_by\":2}\n- Stored state: SELECT status, decided_by FROM requests WHERE id = 1 → approved, 2 (Ben). Read-only query on the local database.\n- Not by design: PRD R4 is explicit. Confirmed with the app owner (Dana, fictional) on 2026-10-25: not by design.\n\n## Steps to reproduce\n1. Log in as Ben (employee).\n2. Request one day of leave, for example Monday 4 February 2030. It appears as pending.\n3. Send POST /api/requests/\u003cid>/approve as Ben (from the browser console, or any HTTP client with his session).\n4. Reload My leave: the request is approved and the balance went down by one day.\n\n## The fix\nIn approveRequest, do what rejectRequest already does: refuse with 403 unless user.role is 'manager', and refuse with 403 when req.user_id === user.id. Check both before the UPDATE.\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/approvals.spec.mjs` (test \"R4 an employee cannot approve their own request\", \"R4 an employee cannot approve a colleague\\'s request\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R4.\n- No other behaviour changes. Do not edit the QA hub."},{"app":"acme-leave","id":"AL-2","title":"Weekend days are charged as leave","sev":"high","area":"requests","summary":"The length of a request counts calendar days instead of working days. A Friday-to-Monday request is charged as 4 days instead of 2, so employees lose leave they never take.","steps":["Log in as Cleo (employee).","Request leave from Friday 8 March 2030 to Monday 11 March 2030.","Look at the Days column in My requests: it says 4.","Have a manager approve it: the balance drops by 4."],"expected":{"text":"Only Monday to Friday count. Worked out by hand: Friday 8 + Monday 11 March 2030 = 2 working days; Saturday 9 and Sunday 10 do not count.","requirement":"R2","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave"},"actual":"The request is stored with days = 4, and an approval takes 4 days off the balance.","where":{"file":"src/leave.mjs","function":"countDays"},"how":{"response":"POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}","state":"SELECT days FROM requests WHERE id = \u003cid> → 4. After approval GET /api/balance → used went up by 4.","byDesignCheck":"PRD R2 says working days only, with this exact example. Not by design."},"related":["AL-3"],"state":"open","hint":"Make countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).","prd":"US-2 Request leave","spec":"qa/acme-leave/specs/regression/requests.spec.mjs","video":"qa/acme-leave/videos/AL-2-weekend-days-are-counted-as-leave.webm","environment":"local, commit c8d93766","foundAt":"2026-10-25","run":"20261025-0006-nightly","fixPrompt":"Fix bug AL-2 in acme-leave (../app, branch main).\n\n## The bug: Weekend days are charged as leave\nThe length of a request counts calendar days instead of working days. A Friday-to-Monday request is charged as 4 days instead of 2, so employees lose leave they never take.\n\nWhere: src/leave.mjs, function `countDays`\n\n## Why it is wrong\nRequirement R2 (US-2 Request leave), apps/local/acme-leave/docs/prd.md#us-2-request-leave: Only Monday to Friday count. Worked out by hand: Friday 8 + Monday 11 March 2030 = 2 working days; Saturday 9 and Sunday 10 do not count.\nActual: The request is stored with days = 4, and an approval takes 4 days off the balance.\n\n## How it was confirmed\n- Response: POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}\n- Stored state: SELECT days FROM requests WHERE id = \u003cid> → 4. After approval GET /api/balance → used went up by 4.\n- Not by design: PRD R2 says working days only, with this exact example. Not by design.\n\n## Steps to reproduce\n1. Log in as Cleo (employee).\n2. Request leave from Friday 8 March 2030 to Monday 11 March 2030.\n3. Look at the Days column in My requests: it says 4.\n4. Have a manager approve it: the balance drops by 4.\n\n## The fix\nMake countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/requests.spec.mjs` (test \"R2 a Friday-to-Monday request counts 2 working days\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R2.\n- No other behaviour changes. Do not edit the QA hub."},{"app":"acme-leave","id":"AL-3","title":"An end date before the start date is accepted, with negative days","sev":"medium","area":"requests","summary":"A request whose end date is before its start date is saved instead of refused. Its day count is negative, so if a manager approves it the employee's balance goes up.","steps":["Log in as Ben (employee).","Request leave from 15 March 2030 to 13 March 2030 (dates the wrong way round).","No error is shown; the request appears as pending with -1 days."],"expected":{"text":"The end date must be on or after the start date, and the request must contain at least one working day; otherwise HTTP 400 with a message, and nothing is saved.","requirement":"R3","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave"},"actual":"HTTP 201. The request is stored with days = -1 and status pending.","where":{"file":"src/leave.mjs","function":"createRequest"},"how":{"response":"POST /api/requests {start: 2030-03-15, end: 2030-03-13} → 201 {\"days\":-1}","state":"SELECT start_date, end_date, days FROM requests WHERE days \u003c 1 → 2030-03-15, 2030-03-13, -1.","byDesignCheck":"PRD R3 is explicit. Not by design."},"related":["AL-2"],"state":"open","hint":"In createRequest, after checking the dates are valid, refuse with 400 when end \u003c start, and (once AL-2 is fixed) when the working-day count is below 1. Do this before the balance check and the INSERT.","prd":"US-2 Request leave","spec":"qa/acme-leave/specs/regression/requests.spec.mjs","video":"qa/acme-leave/videos/AL-3-end-date-before-start-date-is-accepted.webm","environment":"local, commit c8d93766","foundAt":"2026-10-25","run":"20261025-0006-nightly","fixPrompt":"Fix bug AL-3 in acme-leave (../app, branch main).\n\n## The bug: An end date before the start date is accepted, with negative days\nA request whose end date is before its start date is saved instead of refused. Its day count is negative, so if a manager approves it the employee's balance goes up.\n\nWhere: src/leave.mjs, function `createRequest`\n\n## Why it is wrong\nRequirement R3 (US-2 Request leave), apps/local/acme-leave/docs/prd.md#us-2-request-leave: The end date must be on or after the start date, and the request must contain at least one working day; otherwise HTTP 400 with a message, and nothing is saved.\nActual: HTTP 201. The request is stored with days = -1 and status pending.\n\n## How it was confirmed\n- Response: POST /api/requests {start: 2030-03-15, end: 2030-03-13} → 201 {\"days\":-1}\n- Stored state: SELECT start_date, end_date, days FROM requests WHERE days \u003c 1 → 2030-03-15, 2030-03-13, -1.\n- Not by design: PRD R3 is explicit. Not by design.\n\n## Steps to reproduce\n1. Log in as Ben (employee).\n2. Request leave from 15 March 2030 to 13 March 2030 (dates the wrong way round).\n3. No error is shown; the request appears as pending with -1 days.\n\n## The fix\nIn createRequest, after checking the dates are valid, refuse with 400 when end \u003c start, and (once AL-2 is fixed) when the working-day count is below 1. Do this before the balance check and the INSERT.\n\n## Done when\n- The regression spec `qa/acme-leave/specs/regression/requests.spec.mjs` (test \"R3 an end date before the start date is refused and nothing is saved\") passes with REGRESSION_STRICT=1. It is in the QA hub; copy it or ask the QA owner to run it against your branch.\n- Add or update a test in the app's own test suite for requirement R3.\n- No other behaviour changes. Do not edit the QA hub."}],"runs":[{"app":"acme-leave","runId":"20261025-0006-nightly","mode":"nightly","environment":"local","started":"2026-10-24T17:06:24.233Z","finished":"2026-10-24T17:08:19.891Z","hardStop":"2026-10-24T23:00:00.232Z","status":"complete","versions":{"old":null,"new":"c8d93766fbeca584424a62599249bd6774ae510a"},"newFindings":["AL-1","AL-2","AL-3"],"possiblyFixed":[],"regressions":[],"specs":{"smoke":{"total":6,"passed":6},"regression":{"total":14,"known-bug-open":4,"passed":10}},"explored":["approvals (charter 01)","request dates (charter 02)"],"notExplored":["manager approving their own request via the API","a weekend-only request (0 working days)"],"notes":["First run of this hub: no previous tested commit, so the whole app was in scope."],"report":"# Nightly run 20261025-0006-nightly: acme-leave (local)\n\n**Status:** complete · **Version:** first run → c8d93766 · **Hard stop:** 06:00 Asia/Jakarta (not reached)\n\n## Specs\n- Smoke: 6 passed.\n- Regression: 14 tests: 10 passed, 4 known-bug-open (AL-1 ×2, AL-2, AL-3). No new regressions, nothing possibly fixed.\n- Strict check: every knownBug test fails on its real assertion.\n\n## New findings (all five deliverables made)\n- **AL-1** (high) an employee can approve their own request, or a colleague's. `src/leave.mjs` approveRequest.\n- **AL-2** (high) weekend days are charged as leave: Fri→Mon costs 4 days instead of 2. `src/leave.mjs` countDays.\n- **AL-3** (medium) an end date before the start date is saved with negative days. `src/leave.mjs` createRequest.\n\n## Not explored (next run)\n- A manager approving their own request through the API.\n- A weekend-only request (0 working days), after AL-2 is fixed.\n\n## Cleanup\nEverything the run created is in the ledger; on local the database is thrown away (cleanup \"reset\").\n","tests":[{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"approvals › R4 an employee cannot approve their own request","result":"known-bug-open","knownBug":"AL-1"},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"approvals › R4 an employee cannot approve a colleague's request","result":"known-bug-open","knownBug":"AL-1"},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"approvals › R4 a manager approves an employee's request","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"approvals › R4 an employee cannot reject a request","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"approvals › R10 a decided request cannot be decided again","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"balance and privacy › R1 R5 the entitlement is 20 days and a pending request does not count","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"balance and privacy › R8 an employee cannot see the team list","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"balance and privacy › R8 an employee sees only their own requests","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R2 a Friday-to-Monday request counts 2 working days","result":"known-bug-open","knownBug":"AL-2"},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R2 a Monday-to-Friday week counts 5 working days","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R3 an end date before the start date is refused and nothing is saved","result":"known-bug-open","knownBug":"AL-3"},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R7 a request longer than the remaining balance is refused","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R9 a request across two calendar years is refused","result":"passed","knownBug":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"requests › R6 only the requester can cancel a pending request","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/core-flows.spec.mjs","title":"acme-leave core flows › the app is up","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/core-flows.spec.mjs","title":"acme-leave core flows › employee sees their balance and their requests","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/core-flows.spec.mjs","title":"acme-leave core flows › manager can open the team list","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/login.spec.mjs","title":"acme-leave smoke › manager can log in","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/login.spec.mjs","title":"acme-leave smoke › employee can log in","result":"passed","knownBug":null},{"suite":"smoke","file":"qa/acme-leave/specs/smoke/login.spec.mjs","title":"acme-leave smoke › employee2 can log in","result":"passed","knownBug":null}]}],"coverage":[{"app":"acme-leave","requirement":"R1","text":"20 working days of leave per calendar year","story":"US-1 Balance","link":"apps/local/acme-leave/docs/prd.md#us-1-balance","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"R1 R5 the entitlement is 20 days and a pending request does not count","bug":null,"requirements":["R1","R5"],"last":"passed"}]},{"app":"acme-leave","requirement":"R2","text":"Only Monday to Friday count; Fri 8 to Mon 11 March 2030 is 2 days","story":"US-2 Request leave","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave","verdict":"fail","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R2 a Friday-to-Monday request counts 2 working days","bug":"AL-2","requirements":["R2"],"last":"known-bug-open"},{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R2 a Monday-to-Friday week counts 5 working days","bug":null,"requirements":["R2"],"last":"passed"}]},{"app":"acme-leave","requirement":"R3","text":"End on or after start, at least one working day, else 400 and nothing saved","story":"US-2 Request leave","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave","verdict":"fail","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R3 an end date before the start date is refused and nothing is saved","bug":"AL-3","requirements":["R3"],"last":"known-bug-open"}]},{"app":"acme-leave","requirement":"R4","text":"Only a manager decides, never their own request; others get 403","story":"US-3 Decide","link":"apps/local/acme-leave/docs/prd.md#us-3-decide","verdict":"fail","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"R4 an employee cannot approve their own request","bug":"AL-1","requirements":["R4"],"last":"known-bug-open"},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"R4 an employee cannot approve a colleague\\'s request","bug":"AL-1","requirements":["R4"],"last":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"R4 a manager approves an employee\\'s request","bug":null,"requirements":["R4"],"last":null},{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"R4 an employee cannot reject a request","bug":null,"requirements":["R4"],"last":"passed"}]},{"app":"acme-leave","requirement":"R5","text":"Remaining = entitlement minus approved working days; pending does not count","story":"US-1 Balance","link":"apps/local/acme-leave/docs/prd.md#us-1-balance","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"R1 R5 the entitlement is 20 days and a pending request does not count","bug":null,"requirements":["R1","R5"],"last":"passed"}]},{"app":"acme-leave","requirement":"R6","text":"Only the requester cancels their own pending request","story":"US-4 Cancel","link":"apps/local/acme-leave/docs/prd.md#us-4-cancel","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R6 only the requester can cancel a pending request","bug":null,"requirements":["R6"],"last":"passed"}]},{"app":"acme-leave","requirement":"R7","text":"A request may not exceed the remaining balance (400)","story":"US-2 Request leave","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R7 a request longer than the remaining balance is refused","bug":null,"requirements":["R7"],"last":"passed"}]},{"app":"acme-leave","requirement":"R8","text":"Employees see only their own requests; team list is managers only","story":"US-5 Privacy","link":"apps/local/acme-leave/docs/prd.md#us-5-privacy","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"R8 an employee cannot see the team list","bug":null,"requirements":["R8"],"last":"passed"},{"suite":"regression","file":"qa/acme-leave/specs/regression/balance-privacy.spec.mjs","title":"R8 an employee sees only their own requests","bug":null,"requirements":["R8"],"last":"passed"}]},{"app":"acme-leave","requirement":"R9","text":"A request stays inside one calendar year","story":"US-2 Request leave","link":"apps/local/acme-leave/docs/prd.md#us-2-request-leave","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/requests.spec.mjs","title":"R9 a request across two calendar years is refused","bug":null,"requirements":["R9"],"last":"passed"}]},{"app":"acme-leave","requirement":"R10","text":"Only pending requests can be decided (409)","story":"US-3 Decide","link":"apps/local/acme-leave/docs/prd.md#us-3-decide","verdict":"pass","specs":[{"suite":"regression","file":"qa/acme-leave/specs/regression/approvals.spec.mjs","title":"R10 a decided request cannot be decided again","bug":null,"requirements":["R10"],"last":"passed"}]}],"videoBase":"../"};
+  const $ = (s) => document.querySelector(s);
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'class') n.className = v;
+      else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+      else if (v !== undefined && v !== null && v !== false) n.setAttribute(k, v);
+    }
+    for (const kid of kids.flat()) if (kid !== null && kid !== undefined && kid !== false) n.append(kid.nodeType ? kid : String(kid));
+    return n;
+  };
+  const pill = (cls, text) => el('span', { class: 'pill ' + cls }, text);
+  const fmt = (iso) => (iso ? new Date(iso).toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short', timeZone: DATA.timezone }) : '–');
+  const isUrl = (s) => /^https?:\/\//.test(s || '');
+  const link = (href, text) => (href ? el('a', { href: isUrl(href) ? href : DATA.videoBase + href, target: '_blank', rel: 'noopener' }, text || href) : text || '–');
+
+  $('#hub-name').textContent = DATA.hub;
+  document.title = DATA.hub + ' · QA Board';
+  $('#generated').textContent = 'Built ' + fmt(DATA.generated) + ' · ' + DATA.timezone;
+
+  // Latest run banner
+  const latest = DATA.runs[0];
+  if (latest) {
+    const s = latest.specs || {};
+    const sum = Object.entries(s).map(([suite, x]) => `${suite}: ${x.passed || 0} passed, ${x['known-bug-open'] || 0} known bug, ${x['new-regression'] || 0} new regression`).join(' · ');
+    $('#latest').append(el('div', { class: 'banner ' + latest.status },
+      el('strong', {}, 'Latest run'), pill('r-' + latest.status, latest.status),
+      el('span', {}, `${latest.app} · ${latest.mode} · ${latest.environment} · ${fmt(latest.started)}`),
+      el('span', {}, 'Version ', el('code', {}, (latest.versions?.old || '–').slice(0, 8)), ' → ', el('code', {}, (latest.versions?.new || '–').slice(0, 8))),
+      el('span', {}, `New findings: ${(latest.newFindings || []).join(', ') || 'none'}`),
+      latest.possiblyFixed?.length ? el('span', {}, 'Possibly fixed: ', el('strong', {}, latest.possiblyFixed.join(', '))) : null,
+      sum ? el('span', { class: 'sub' }, sum) : null));
+  }
+
+  // Tabs (remembered per viewer)
+  const tabs = document.querySelectorAll('nav.tabs button');
+  function showTab(name) {
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    for (const t of ['bugs', 'runs', 'coverage']) $('#tab-' + t).hidden = t !== name;
+    try { localStorage.setItem('qa-board-tab', name); } catch (e) { /* storage blocked */ }
+    if (location.hash.slice(1) !== name && !location.hash.startsWith('#bug=')) history.replaceState(null, '', '#' + name);
+  }
+  tabs.forEach((b) => b.addEventListener('click', () => showTab(b.dataset.tab)));
+
+  // Bugs
+  const apps = [...new Set(DATA.bugs.map((b) => b.app))];
+  $('#f-app').append(el('option', { value: '' }, 'All apps'), ...apps.map((a) => el('option', {}, a)));
+  let current = null;
+  function filtered() {
+    const app = $('#f-app').value, sev = $('#f-sev').value, st = $('#f-state').value, q = $('#f-q').value.toLowerCase();
+    return DATA.bugs.filter((b) => (!app || b.app === app) && (!sev || b.sev === sev) && (!st || b.state === st)
+      && (!q || [b.id, b.title, b.area, b.summary, b.expected?.requirement, b.prd].join(' ').toLowerCase().includes(q)));
+  }
+  function renderList() {
+    const list = filtered();
+    const box = $('#bug-list');
+    box.replaceChildren();
+    if (!list.length) box.append(el('div', { class: 'empty' }, 'No bugs match these filters.'));
+    for (const b of list) {
+      box.append(el('button', { 'aria-current': String(current === b.id), 'data-bug': b.id, onclick: () => select(b.id) },
+        el('span', { class: 'id' }, b.id), b.title,
+        el('div', { class: 'meta' }, pill('sev-' + b.sev, b.sev), pill('st-' + b.state, b.state), el('span', { class: 'sub' }, b.app + ' · ' + b.area))));
+    }
+    if (!current && list[0]) select(list[0].id, true);
+  }
+  async function copy(text, note) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const t = el('textarea', {}, text);
+      document.body.append(t);
+      t.select();
+      document.execCommand('copy');
+      t.remove();
+    }
+    note.textContent = 'Copied';
+    setTimeout(() => (note.textContent = ''), 2000);
+  }
+  function select(id, quiet) {
+    current = id;
+    const b = DATA.bugs.find((x) => x.id === id);
+    document.querySelectorAll('#bug-list button').forEach((n) => n.setAttribute('aria-current', String(n.dataset.bug === id)));
+    if (!quiet) history.replaceState(null, '', '#bug=' + id);
+    const d = $('#bug-detail');
+    d.replaceChildren();
+    if (!b) return;
+    const note = el('span', { class: 'copied', 'aria-live': 'polite' });
+    d.append(
+      el('h2', {}, b.id + ' · ' + b.title),
+      el('div', { class: 'meta' }, pill('sev-' + b.sev, b.sev), ' ', pill('st-' + b.state, b.state), ' ', el('span', { class: 'sub' }, `${b.app} · ${b.area} · found ${b.foundAt} in run ${b.run} · ${b.environment}`)),
+      el('p', {}, b.summary),
+      el('div', { class: 'actions' },
+        el('button', { class: 'btn', 'data-testid': 'copy-fix-prompt', onclick: () => copy(b.fixPrompt, note) }, 'Copy fix prompt'),
+        el('button', { class: 'btn secondary', onclick: () => { const p = d.querySelector('pre.prompt'); p.hidden = !p.hidden; } }, 'Show fix prompt'),
+        note),
+      el('pre', { class: 'prompt', hidden: true }, b.fixPrompt),
+      b.video ? el('video', { controls: true, preload: 'metadata', src: DATA.videoBase + b.video }) : el('p', { class: 'sub' }, 'No video yet.'),
+      b.videoAfter ? el('div', {}, el('h3', {}, 'After fix'), el('video', { controls: true, preload: 'metadata', src: DATA.videoBase + b.videoAfter })) : null,
+      el('h3', {}, 'Steps'), el('ol', {}, b.steps.map((s) => el('li', {}, s))),
+      el('h3', {}, 'Expected vs actual'),
+      el('dl', { class: 'kv' },
+        el('dt', {}, 'Expected'), el('dd', {}, b.expected.text, ' ', b.expected.link ? link(b.expected.link, '(' + b.expected.requirement + ')') : '(' + b.expected.requirement + ')'),
+        el('dt', {}, 'Actual'), el('dd', {}, b.actual),
+        el('dt', {}, 'Story'), el('dd', {}, b.prd || '–')),
+      el('h3', {}, 'How it was confirmed'),
+      el('dl', { class: 'kv' },
+        el('dt', {}, 'Response'), el('dd', {}, b.how.response),
+        el('dt', {}, 'Stored state'), el('dd', {}, b.how.state),
+        b.how.byDesignCheck ? el('dt', {}, 'Not by design') : null, b.how.byDesignCheck ? el('dd', {}, b.how.byDesignCheck) : null),
+      el('h3', {}, 'Where'),
+      el('dl', { class: 'kv' },
+        el('dt', {}, 'Code'), el('dd', {}, b.where?.file ? el('code', {}, b.where.file + (b.where.function ? ' › ' + b.where.function : '')) : 'not known yet'),
+        el('dt', {}, 'Regression spec'), el('dd', {}, b.spec ? el('code', {}, b.spec) : '–'),
+        el('dt', {}, 'Related'), el('dd', {}, (b.related || []).join(', ') || '–')),
+    );
+  }
+  ['#f-app', '#f-sev', '#f-state'].forEach((s) => $(s).addEventListener('change', () => { current = null; renderList(); }));
+  $('#f-q').addEventListener('input', () => { current = null; renderList(); });
+
+  // Runs
+  const runsBox = $('#tab-runs');
+  if (!DATA.runs.length) runsBox.append(el('div', { class: 'empty' }, 'No runs yet.'));
+  else {
+    runsBox.append(el('table', {},
+      el('thead', {}, el('tr', {}, ['Run', 'App', 'Mode', 'Env', 'Status', 'Versions', 'Specs', 'New findings', 'Possibly fixed', 'Not explored'].map((h) => el('th', {}, h)))),
+      el('tbody', {}, DATA.runs.map((r) => el('tr', {},
+        el('td', {}, el('strong', {}, r.runId), el('div', { class: 'sub' }, fmt(r.started))),
+        el('td', {}, r.app), el('td', {}, r.mode), el('td', {}, r.environment), el('td', {}, pill('r-' + r.status, r.status)),
+        el('td', {}, el('code', {}, (r.versions?.old || '–').slice(0, 8)), ' → ', el('code', {}, (r.versions?.new || '–').slice(0, 8))),
+        el('td', {}, Object.entries(r.specs || {}).map(([k, v]) => el('div', {}, `${k}: ${v.total} (${v.passed || 0} ✓, ${v['known-bug-open'] || 0} known, ${v['new-regression'] || 0} new)`))),
+        el('td', {}, (r.newFindings || []).join(', ') || '–'),
+        el('td', {}, (r.possiblyFixed || []).join(', ') || '–'),
+        el('td', {}, (r.notExplored || []).join('; ') || '–'))))));
+    for (const r of DATA.runs.filter((x) => x.report).slice(0, 1)) {
+      runsBox.append(el('h3', {}, 'Report of ' + r.runId), el('pre', {}, r.report));
+    }
+  }
+
+  // Coverage
+  const covBox = $('#tab-coverage');
+  if (!DATA.coverage.length) covBox.append(el('div', { class: 'empty' }, 'No requirements checklist yet. Run the spec-assurance or prd-checklist skill.'));
+  else {
+    const covered = DATA.coverage.filter((c) => c.specs.length).length;
+    covBox.append(el('p', {}, `${covered} of ${DATA.coverage.length} requirements have at least one spec. Coverage is counted by requirement, not by lines of code.`));
+    covBox.append(el('table', {},
+      el('thead', {}, el('tr', {}, ['App', 'Requirement', 'Rule', 'Spec', 'Last result', 'Assurance verdict'].map((h) => el('th', {}, h)))),
+      el('tbody', {}, DATA.coverage.map((c) => el('tr', {},
+        el('td', {}, c.app), el('td', {}, c.link ? link(c.link, c.requirement) : c.requirement, c.story ? el('div', { class: 'sub' }, c.story) : null),
+        el('td', {}, c.text || '–'),
+        el('td', {}, c.specs.length ? c.specs.map((s) => el('div', {}, el('code', {}, s.title))) : pill('r-new-regression', 'no spec')),
+        el('td', {}, c.specs.map((s) => el('div', {}, pill('r-' + (s.last || 'none'), s.last || 'not run')))),
+        el('td', {}, c.verdict ? pill(c.verdict === 'pass' ? 'r-passed' : c.verdict === 'fail' ? 'r-new-regression' : 'r-skipped', c.verdict) : '–'))))));
+  }
+
+  // Links like #runs, #coverage or #bug=AL-2 open that view, on load and when the hash changes.
+  function route(first) {
+    const h = location.hash.slice(1);
+    if (h.startsWith('bug=')) {
+      current = h.slice(4);
+      showTab('bugs');
+      renderList();
+      select(current, true);
+      return;
+    }
+    let saved = 'bugs';
+    try { saved = localStorage.getItem('qa-board-tab') || 'bugs'; } catch (e) { /* storage blocked */ }
+    showTab(['bugs', 'runs', 'coverage'].includes(h) ? h : first ? saved : 'bugs');
+    if (first) renderList();
+  }
+  window.addEventListener('hashchange', () => route(false));
+  route(true);
+})();
+</script>
+</body>
+</html>

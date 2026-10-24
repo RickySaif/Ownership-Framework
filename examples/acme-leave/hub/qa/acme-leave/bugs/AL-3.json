@@ -15,19 +15,24 @@
     "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave"
   },
   "actual": "HTTP 201. The request is stored with days = -1 and status pending.",
-  "where": { "file": "src/leave.mjs", "function": "createRequest" },
+  "where": {
+    "file": "src/leave.mjs",
+    "function": "createRequest"
+  },
   "how": {
     "response": "POST /api/requests {start: 2030-03-15, end: 2030-03-13} → 201 {\"days\":-1}",
     "state": "SELECT start_date, end_date, days FROM requests WHERE days < 1 → 2030-03-15, 2030-03-13, -1.",
     "byDesignCheck": "PRD R3 is explicit. Not by design."
   },
-  "related": ["AL-2"],
+  "related": [
+    "AL-2"
+  ],
   "state": "open",
   "hint": "In createRequest, after checking the dates are valid, refuse with 400 when end < start, and (once AL-2 is fixed) when the working-day count is below 1. Do this before the balance check and the INSERT.",
   "prd": "US-2 Request leave",
   "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
   "video": "qa/acme-leave/videos/AL-3-end-date-before-start-date-is-accepted.webm",
-  "environment": "local (example app)",
-  "foundAt": "2026-10-23",
-  "run": "20261023-0130-nightly"
+  "environment": "local, commit c8d93766",
+  "foundAt": "2026-10-25",
+  "run": "20261025-0006-nightly"
 }

@@ -1,0 +1,5 @@
+[
+  { "id": "AL-1", "charter": "01-approvals", "kind": "new", "confirmed": ["response", "db"], "byDesign": "no (owner)" },
+  { "id": "AL-2", "charter": "02-request-dates", "kind": "new", "confirmed": ["response", "db"], "byDesign": "no (PRD example)" },
+  { "id": "AL-3", "charter": "02-request-dates", "kind": "new", "confirmed": ["response", "db"], "byDesign": "no (PRD)" }
+]

@@ -1,0 +1,38 @@
+/* One palette and font for every README visual. render.mjs adds class="dark" to the root for the dark variant. */
+:root {
+  --bg: #f8fafc; --panel: #ffffff; --ink: #0f172a; --muted: #475569; --line: #cbd5e1;
+  --teal: #0f766e; --teal-2: #14b8a6; --teal-bg: #ccfbf1;
+  --amber: #b45309; --amber-2: #f59e0b; --amber-bg: #fef3c7;
+  --red: #b91c1c; --red-bg: #fee2e2; --green: #15803d; --green-bg: #dcfce7; --blue: #1d4ed8; --blue-bg: #dbeafe;
+}
+:root.dark {
+  --bg: #0f172a; --panel: #131f38; --ink: #e2e8f0; --muted: #94a3b8; --line: #334155;
+  --teal: #2dd4bf; --teal-2: #14b8a6; --teal-bg: #0f3b38;
+  --amber: #fbbf24; --amber-2: #f59e0b; --amber-bg: #3a2a0a;
+  --red: #fca5a5; --red-bg: #3b1212; --green: #86efac; --green-bg: #0f2e1b; --blue: #93c5fd; --blue-bg: #13233f;
+}
+text { font-family: "Inter", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif; fill: var(--ink); }
+.mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+.bg { fill: var(--bg); }
+.panel { fill: var(--panel); stroke: var(--line); stroke-width: 1.5; }
+.panel-teal { fill: var(--teal-bg); stroke: var(--teal); stroke-width: 2; }
+.panel-amber { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 1.5; }
+.panel-red { fill: var(--red-bg); stroke: var(--red); stroke-width: 1.5; }
+.panel-green { fill: var(--green-bg); stroke: var(--green); stroke-width: 1.5; }
+.panel-blue { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 1.5; }
+.fill-teal { fill: var(--teal); } .fill-teal2 { fill: var(--teal-2); } .fill-amber { fill: var(--amber-2); }
+.fill-line { fill: var(--line); } .fill-muted { fill: var(--muted); } .fill-panel { fill: var(--panel); }
+.fill-red { fill: var(--red); } .fill-green { fill: var(--green); }
+.t-muted { fill: var(--muted); } .t-teal { fill: var(--teal); } .t-amber { fill: var(--amber); } .t-red { fill: var(--red); } .t-green { fill: var(--green); } .t-blue { fill: var(--blue); }
+.t-bg { fill: var(--bg); }
+.h1 { font-size: 54px; font-weight: 800; letter-spacing: -0.5px; }
+.h2 { font-size: 26px; font-weight: 700; }
+.h3 { font-size: 19px; font-weight: 700; }
+.body { font-size: 16px; }
+.small { font-size: 13.5px; }
+.label { font-size: 12.5px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; fill: var(--muted); }
+.line { stroke: var(--line); stroke-width: 1.5; fill: none; }
+.flow { stroke: var(--muted); stroke-width: 2.2; fill: none; marker-end: url(#arrow); }
+.flow-teal { stroke: var(--teal); stroke-width: 2.6; fill: none; marker-end: url(#arrow-teal); }
+.dash { stroke-dasharray: 6 5; }
+.head { fill: var(--muted); } .head-teal { fill: var(--teal); }

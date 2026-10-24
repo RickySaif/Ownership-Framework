@@ -13,7 +13,7 @@
     "lint": "eslint .",
     "secret-scan": "node scripts/secret-scan.mjs --all",
     "secret-scan:history": "node scripts/secret-scan.mjs --history",
-    "example": "npm run example:sync && npm run example:board",
+    "example": "npm run example:sync && npm run example:test && npm run example:board && node -e \"console.log('\\\\nOpen examples/acme-leave/hub/board/index.html in your browser.')\"",
     "example:generate-check": "node skills/ownership-setup/scripts/generate-hub.mjs --answers examples/acme-leave/answers.json --out examples/acme-leave/hub --check",
     "example:sync": "npm --prefix examples/acme-leave/hub run sync",
     "example:validate": "npm --prefix examples/acme-leave/hub run validate",
@@ -25,7 +25,7 @@
     "example:app": "node examples/acme-leave/app/server.mjs --reset",
     "visuals": "node docs/visuals/render.mjs && node docs/visuals/capture.mjs && node scripts/check-visuals.mjs",
     "visuals:check": "node scripts/check-visuals.mjs",
-    "test": "npm run lint && npm run secret-scan && npm run example:generate-check && npm run example:validate && npm run example:test && npm run example:strict"
+    "test": "npm run lint && npm run secret-scan && npm run example:generate-check && npm run example:validate && npm run example:sync && npm run example:test && npm run example:smoke && npm run example:strict && npm run visuals:check"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

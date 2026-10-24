@@ -15,7 +15,7 @@
 import { test as qaTest, loginPage } from './qa.mjs';
 import { copyFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { qaDir } from '../tools/lib/hub.mjs';
+import { qaDir, has, sh } from '../tools/lib/hub.mjs';
 
 let current = null;
 const slug = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
@@ -115,7 +115,9 @@ export function demo(name, fn) {
         const dir = join(qaDir(appName), 'videos');
         mkdirSync(dir, { recursive: true });
         const out = join(dir, `${id}-${slug(name.slice(id.length))}${after ? '.after' : ''}.webm`);
-        copyFileSync(await video.path(), out);
+        // Playwright's webm has no duration, so players cannot seek. ffmpeg (from npm run init) rewrites the header.
+        if (has('ffmpeg')) sh('ffmpeg', ['-v', 'error', '-y', '-i', await video.path(), '-c', 'copy', out]);
+        else copyFileSync(await video.path(), out);
         info.annotations.push({ type: 'video', description: out });
       }
     }

@@ -16,19 +16,24 @@
     "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave"
   },
   "actual": "The request is stored with days = 4, and an approval takes 4 days off the balance.",
-  "where": { "file": "src/leave.mjs", "function": "countDays" },
+  "where": {
+    "file": "src/leave.mjs",
+    "function": "countDays"
+  },
   "how": {
     "response": "POST /api/requests {start: 2030-03-08, end: 2030-03-11} → 201 {\"days\":4}",
     "state": "SELECT days FROM requests WHERE id = <id> → 4. After approval GET /api/balance → used went up by 4.",
     "byDesignCheck": "PRD R2 says working days only, with this exact example. Not by design."
   },
-  "related": ["AL-3"],
+  "related": [
+    "AL-3"
+  ],
   "state": "open",
   "hint": "Make countDays walk from start to end and count only days whose UTC weekday is Monday to Friday. Keep the result an integer. Public holidays are out of scope (PRD R2).",
   "prd": "US-2 Request leave",
   "spec": "qa/acme-leave/specs/regression/requests.spec.mjs",
   "video": "qa/acme-leave/videos/AL-2-weekend-days-are-counted-as-leave.webm",
-  "environment": "local (example app)",
-  "foundAt": "2026-10-23",
-  "run": "20261023-0130-nightly"
+  "environment": "local, commit c8d93766",
+  "foundAt": "2026-10-25",
+  "run": "20261025-0006-nightly"
 }

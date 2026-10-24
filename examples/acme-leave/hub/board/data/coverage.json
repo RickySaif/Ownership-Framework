@@ -1,0 +1,254 @@
+[
+  {
+    "app": "acme-leave",
+    "requirement": "R1",
+    "text": "20 working days of leave per calendar year",
+    "story": "US-1 Balance",
+    "link": "apps/local/acme-leave/docs/prd.md#us-1-balance",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "R1 R5 the entitlement is 20 days and a pending request does not count",
+        "bug": null,
+        "requirements": [
+          "R1",
+          "R5"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R2",
+    "text": "Only Monday to Friday count; Fri 8 to Mon 11 March 2030 is 2 days",
+    "story": "US-2 Request leave",
+    "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave",
+    "verdict": "fail",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R2 a Friday-to-Monday request counts 2 working days",
+        "bug": "AL-2",
+        "requirements": [
+          "R2"
+        ],
+        "last": "known-bug-open"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R2 a Monday-to-Friday week counts 5 working days",
+        "bug": null,
+        "requirements": [
+          "R2"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R3",
+    "text": "End on or after start, at least one working day, else 400 and nothing saved",
+    "story": "US-2 Request leave",
+    "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave",
+    "verdict": "fail",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R3 an end date before the start date is refused and nothing is saved",
+        "bug": "AL-3",
+        "requirements": [
+          "R3"
+        ],
+        "last": "known-bug-open"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R4",
+    "text": "Only a manager decides, never their own request; others get 403",
+    "story": "US-3 Decide",
+    "link": "apps/local/acme-leave/docs/prd.md#us-3-decide",
+    "verdict": "fail",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "R4 an employee cannot approve their own request",
+        "bug": "AL-1",
+        "requirements": [
+          "R4"
+        ],
+        "last": "known-bug-open"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "R4 an employee cannot approve a colleague\\'s request",
+        "bug": "AL-1",
+        "requirements": [
+          "R4"
+        ],
+        "last": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "R4 a manager approves an employee\\'s request",
+        "bug": null,
+        "requirements": [
+          "R4"
+        ],
+        "last": null
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "R4 an employee cannot reject a request",
+        "bug": null,
+        "requirements": [
+          "R4"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R5",
+    "text": "Remaining = entitlement minus approved working days; pending does not count",
+    "story": "US-1 Balance",
+    "link": "apps/local/acme-leave/docs/prd.md#us-1-balance",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "R1 R5 the entitlement is 20 days and a pending request does not count",
+        "bug": null,
+        "requirements": [
+          "R1",
+          "R5"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R6",
+    "text": "Only the requester cancels their own pending request",
+    "story": "US-4 Cancel",
+    "link": "apps/local/acme-leave/docs/prd.md#us-4-cancel",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R6 only the requester can cancel a pending request",
+        "bug": null,
+        "requirements": [
+          "R6"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R7",
+    "text": "A request may not exceed the remaining balance (400)",
+    "story": "US-2 Request leave",
+    "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R7 a request longer than the remaining balance is refused",
+        "bug": null,
+        "requirements": [
+          "R7"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R8",
+    "text": "Employees see only their own requests; team list is managers only",
+    "story": "US-5 Privacy",
+    "link": "apps/local/acme-leave/docs/prd.md#us-5-privacy",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "R8 an employee cannot see the team list",
+        "bug": null,
+        "requirements": [
+          "R8"
+        ],
+        "last": "passed"
+      },
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/balance-privacy.spec.mjs",
+        "title": "R8 an employee sees only their own requests",
+        "bug": null,
+        "requirements": [
+          "R8"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R9",
+    "text": "A request stays inside one calendar year",
+    "story": "US-2 Request leave",
+    "link": "apps/local/acme-leave/docs/prd.md#us-2-request-leave",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/requests.spec.mjs",
+        "title": "R9 a request across two calendar years is refused",
+        "bug": null,
+        "requirements": [
+          "R9"
+        ],
+        "last": "passed"
+      }
+    ]
+  },
+  {
+    "app": "acme-leave",
+    "requirement": "R10",
+    "text": "Only pending requests can be decided (409)",
+    "story": "US-3 Decide",
+    "link": "apps/local/acme-leave/docs/prd.md#us-3-decide",
+    "verdict": "pass",
+    "specs": [
+      {
+        "suite": "regression",
+        "file": "qa/acme-leave/specs/regression/approvals.spec.mjs",
+        "title": "R10 a decided request cannot be decided again",
+        "bug": null,
+        "requirements": [
+          "R10"
+        ],
+        "last": "passed"
+      }
+    ]
+  }
+]

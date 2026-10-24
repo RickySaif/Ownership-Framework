@@ -16,3 +16,5 @@ playwright-report/
 .env.*
 !.env.example
 .playwright-mcp/
+# Runs made by trying the example (npm run example); the committed sample run stays
+examples/acme-leave/hub/runs/acme-leave/*-attended/

@@ -1,0 +1,90 @@
+{
+  "suite": "smoke",
+  "runId": "20261025-0006-nightly",
+  "environment": "local",
+  "finished": "2026-10-24T17:06:39.389Z",
+  "summary": {
+    "total": 6,
+    "passed": 6
+  },
+  "tests": [
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+      "line": 5,
+      "title": "acme-leave core flows › the app is up",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 74,
+      "result": "passed"
+    },
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+      "line": 10,
+      "title": "acme-leave core flows › employee sees their balance and their requests",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 781,
+      "result": "passed"
+    },
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/core-flows.spec.mjs",
+      "line": 17,
+      "title": "acme-leave core flows › manager can open the team list",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 418,
+      "result": "passed"
+    },
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+      "line": 6,
+      "title": "acme-leave smoke › manager can log in",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 341,
+      "result": "passed"
+    },
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+      "line": 11,
+      "title": "acme-leave smoke › employee can log in",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 374,
+      "result": "passed"
+    },
+    {
+      "project": "acme-leave-smoke",
+      "file": "qa/acme-leave/specs/smoke/login.spec.mjs",
+      "line": 16,
+      "title": "acme-leave smoke › employee2 can log in",
+      "outcome": "expected",
+      "status": "passed",
+      "expectedStatus": "passed",
+      "knownBug": null,
+      "error": null,
+      "duration": 357,
+      "result": "passed"
+    }
+  ]
+}

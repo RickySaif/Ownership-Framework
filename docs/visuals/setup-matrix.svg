@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="theme.css" type="text/css"?>
+<!-- Pick your setup: test types × routines, plus the deliverables a hub can produce. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="540" viewBox="0 0 1280 540">
+  <rect class="bg" width="1280" height="540" rx="20"/>
+  <text x="40" y="52" class="h2">Pick your setup</text>
+  <text x="40" y="80" class="body t-muted">The ownership-setup interview asks which test types, deliverables and routines your hub uses. Mix freely.</text>
+
+  <!-- Matrix: test types × routines -->
+  <g transform="translate(40 112)">
+    <rect width="760" height="394" rx="14" class="panel"/>
+    <text x="24" y="44" class="label">Test type</text>
+    <text x="388" y="44" text-anchor="middle" class="label">Nightly</text>
+    <text x="528" y="44" text-anchor="middle" class="label">Weekly</text>
+    <text x="668" y="44" text-anchor="middle" class="label">Attended</text>
+    <line x1="16" y1="62" x2="744" y2="62" class="line"/>
+
+    <text x="24" y="104" class="h3">Spec assurance</text><text x="24" y="126" class="small t-muted">requirements → rules → pass / fail</text>
+    <rect x="338" y="88" width="100" height="32" rx="16" class="fill-line" opacity="0.5"/><text x="388" y="109" text-anchor="middle" class="small t-muted">–</text>
+    <rect x="468" y="88" width="120" height="32" rx="16" class="panel-teal"/><text x="528" y="109" text-anchor="middle" class="small t-teal" font-weight="700">1 area a week</text>
+    <rect x="618" y="88" width="100" height="32" rx="16" class="panel-teal"/><text x="668" y="109" text-anchor="middle" class="small t-teal" font-weight="700">any area</text>
+    <line x1="16" y1="146" x2="744" y2="146" class="line"/>
+
+    <text x="24" y="188" class="h3">Exploratory hunt</text><text x="24" y="210" class="small t-muted">charters · roles · edges · money and dates</text>
+    <rect x="328" y="172" width="120" height="32" rx="16" class="panel-teal"/><text x="388" y="193" text-anchor="middle" class="small t-teal" font-weight="700">the diff only</text>
+    <rect x="468" y="172" width="120" height="32" rx="16" class="panel-teal"/><text x="528" y="193" text-anchor="middle" class="small t-teal" font-weight="700">deep, 1 area</text>
+    <rect x="608" y="172" width="120" height="32" rx="16" class="panel-amber"/><text x="668" y="193" text-anchor="middle" class="small t-amber" font-weight="700">person judges</text>
+    <line x1="16" y1="230" x2="744" y2="230" class="line"/>
+
+    <text x="24" y="272" class="h3">Smoke check</text><text x="24" y="294" class="small t-muted">is it up, are the core flows alive (read-only)</text>
+    <rect x="338" y="256" width="100" height="32" rx="16" class="panel-green"/><text x="388" y="277" text-anchor="middle" class="small t-green" font-weight="700">✓ always</text>
+    <rect x="478" y="256" width="100" height="32" rx="16" class="panel-green"/><text x="528" y="277" text-anchor="middle" class="small t-green" font-weight="700">✓ always</text>
+    <rect x="618" y="256" width="100" height="32" rx="16" class="panel-green"/><text x="668" y="277" text-anchor="middle" class="small t-green" font-weight="700">✓ first</text>
+    <line x1="16" y1="314" x2="744" y2="314" class="line"/>
+
+    <text x="24" y="352" class="h3">Regression run</text><text x="24" y="374" class="small t-muted">every spec; new · known bug · possibly fixed</text>
+    <rect x="338" y="338" width="100" height="32" rx="16" class="panel-green"/><text x="388" y="359" text-anchor="middle" class="small t-green" font-weight="700">✓ all specs</text>
+    <rect x="478" y="338" width="100" height="32" rx="16" class="panel-green"/><text x="528" y="359" text-anchor="middle" class="small t-green" font-weight="700">✓ all specs</text>
+    <rect x="618" y="338" width="100" height="32" rx="16" class="panel-teal"/><text x="668" y="359" text-anchor="middle" class="small t-teal" font-weight="700">on demand</text>
+  </g>
+
+  <!-- Deliverables -->
+  <g transform="translate(830 112)">
+    <rect width="410" height="394" rx="14" class="panel"/>
+    <text x="24" y="44" class="label">Deliverables (choose any)</text>
+    <line x1="16" y1="62" x2="394" y2="62" class="line"/>
+    <g class="small">
+      <rect x="24" y="82" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 93 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
+      <text x="60" y="99" class="body" font-weight="700">Bug file</text><text x="214" y="99" class="small t-muted">JSON, schema-checked</text>
+      <rect x="24" y="126" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 137 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
+      <text x="60" y="143" class="body" font-weight="700">Captioned video</text><text x="214" y="143" class="small t-muted">steps + evidence panel</text>
+      <rect x="24" y="170" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 181 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
+      <text x="60" y="187" class="body" font-weight="700">Regression spec</text><text x="214" y="187" class="small t-muted">knownBug, strict-checked</text>
+      <rect x="24" y="214" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 225 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
+      <text x="60" y="231" class="body" font-weight="700">Smoke suite</text><text x="214" y="231" class="small t-muted">read-only, any environment</text>
+      <rect x="24" y="258" width="22" height="22" rx="6" class="fill-teal"/><path d="M29 269 l5 5 l8 -10" style="stroke: var(--bg)" stroke-width="3" fill="none"/>
+      <text x="60" y="275" class="body" font-weight="700">Board</text><text x="214" y="275" class="small t-muted">bugs, videos, prompts, runs</text>
+      <rect x="24" y="302" width="22" height="22" rx="6" class="panel"/>
+      <text x="60" y="319" class="body" font-weight="700">Coverage table</text><text x="214" y="319" class="small t-muted">requirement → spec</text>
+    </g>
+  </g>
+</svg>
